@@ -46,7 +46,7 @@ builder.Services.AddAuthorization();
 // CORS
 builder.Services.AddCors(opt =>
     opt.AddPolicy("Angular", p => p
-        .WithOrigins("http://localhost:4200", "https://f1fast.com.br")
+        .WithOrigins("http://localhost:4200", "https://f1fast.com.br", "https://blue-pond-0da734610.2.azurestaticapps.net")
         .AllowAnyMethod()
         .AllowAnyHeader()
     )
