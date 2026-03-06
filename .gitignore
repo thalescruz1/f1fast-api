@@ -1,0 +1,12 @@
+# .NET
+bin/
+obj/
+*.user
+*.suo
+.vs/
+
+# Configurações sensíveis
+appsettings.Development.json
+
+# Mac
+.DS_Store
