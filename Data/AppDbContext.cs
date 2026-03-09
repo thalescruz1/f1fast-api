@@ -1,10 +1,31 @@
+// ============================================================
+// DATA: AppDbContext
+// ============================================================
+// O "DbContext" é o coração do Entity Framework Core (EF Core).
+// É a "ponte" entre o código C# e o banco de dados MySQL.
+//
+// Responsabilidades:
+//   - Define quais tabelas existem no banco (DbSet<T>)
+//   - Configura índices e restrições de unicidade
+//   - Popula dados iniciais (Seed: equipes, pilotos, etapas)
+//   - Executa queries e persiste mudanças (SaveChanges)
+//
+// "Migrations" usam esta classe para gerar os scripts SQL
+// que criam/atualizam o schema do banco de dados.
+// ============================================================
+
 using Microsoft.EntityFrameworkCore;
 using F1Fast.API.Models;
 
 namespace F1Fast.API.Data;
 
+// DbContextOptions = configurações passadas pelo Program.cs (string de conexão MySQL)
+// : DbContext(options) = herda de DbContext passando as opções para a classe base
 public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
+    // DbSet<T> = representa uma tabela no banco de dados.
+    // "=> Set<T>()" é a forma moderna de declarar DbSet.
+    // Com eles, fazemos queries assim: db.Usuarios.Where(...).ToListAsync()
     public DbSet<Usuario>   Usuarios   => Set<Usuario>();
     public DbSet<Equipe>    Equipes    => Set<Equipe>();
     public DbSet<Piloto>    Pilotos    => Set<Piloto>();
@@ -13,15 +34,23 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<Resultado> Resultados => Set<Resultado>();
     public DbSet<Pontuacao> Pontuacoes => Set<Pontuacao>();
 
+    /// <summary>
+    /// Configuração avançada do modelo do banco de dados.
+    /// Chamado pelo EF Core ao criar as migrations e ao inicializar.
+    /// </summary>
     protected override void OnModelCreating(ModelBuilder mb)
     {
-        mb.Entity<Usuario>().HasIndex(u => u.Login).IsUnique();
-        mb.Entity<Usuario>().HasIndex(u => u.Cpf).IsUnique();
-        mb.Entity<Usuario>().HasIndex(u => u.Email).IsUnique();
-        mb.Entity<Resultado>().HasIndex(r => r.EtapaId).IsUnique();
-        mb.Entity<Pontuacao>().HasIndex(p => new { p.UsuarioId, p.EtapaId }).IsUnique();
-        mb.Entity<Palpite>().HasIndex(p => new { p.UsuarioId, p.EtapaId }).IsUnique();
+        // ÍNDICES ÚNICOS: garantem que não existam dois registros com o mesmo valor
+        // Isso é validado PELO BANCO, como uma segunda linha de defesa além do C#
+        mb.Entity<Usuario>().HasIndex(u => u.Login).IsUnique();  // não pode ter login duplicado
+        mb.Entity<Usuario>().HasIndex(u => u.Cpf).IsUnique();    // não pode ter CPF duplicado
+        mb.Entity<Usuario>().HasIndex(u => u.Email).IsUnique();  // não pode ter e-mail duplicado
+        mb.Entity<Resultado>().HasIndex(r => r.EtapaId).IsUnique();                    // 1 resultado por etapa
+        mb.Entity<Pontuacao>().HasIndex(p => new { p.UsuarioId, p.EtapaId }).IsUnique(); // 1 pontuação por usuário/etapa
+        mb.Entity<Palpite>().HasIndex(p => new { p.UsuarioId, p.EtapaId }).IsUnique();   // 1 palpite por usuário/etapa
 
+        // SEED DATA: dados pré-carregados automaticamente na criação do banco.
+        // ".HasData()" instrui o EF a inserir estes registros na migration inicial.
         // Seed Equipes
         mb.Entity<Equipe>().HasData(
             new Equipe { Id=1,  Nome="McLaren",      Cor="#FF8000" },
