@@ -89,7 +89,9 @@ builder.Services.AddCors(opt =>
         .WithOrigins(
             "http://localhost:4200",              // desenvolvimento local
             "https://f1fast.com.br",              // produção
-            "https://blue-pond-0da734610.2.azurestaticapps.net" // Azure Static Web Apps
+            "https://blue-pond-0da734610.2.azurestaticapps.net",
+            "http://novo.f1fast.com.br",     "https://novo.f1fast.com.br"
+            //  // Azure Static Web Apps
         )
         .AllowAnyMethod()  // permite GET, POST, PATCH, etc.
         .AllowAnyHeader()  // permite qualquer header (incluindo Authorization)
