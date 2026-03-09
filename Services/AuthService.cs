@@ -181,7 +181,7 @@ public class AuthService(AppDbContext db, IConfiguration config, ILogger<AuthSer
             config["Smtp:Host"], int.Parse(config["Smtp:Port"]!));
 
         client.Credentials = new System.Net.NetworkCredential(config["Smtp:User"], config["Smtp:Pass"]);
-        client.EnableSsl   = true; // usa TLS/SSL para envio seguro
+        client.EnableSsl   = false; // usa TLS/SSL para envio seguro
 
         await client.SendMailAsync(
             new MailMessage(config["Smtp:From"]!, para, assunto, corpo));
