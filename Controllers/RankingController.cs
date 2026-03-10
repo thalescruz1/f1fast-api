@@ -24,6 +24,33 @@ public class RankingController(PontuacaoService pontuacao, AppDbContext db) : Co
     public async Task<IActionResult> GetGeral() =>
         Ok(await pontuacao.GetRankingGeralAsync());
 
+    // GET /api/ranking/{login}/historico → pontuação por corrida de um participante
+    // Retorna as etapas encerradas em que o usuário fez palpite, ordenadas por número
+    [HttpGet("{login}/historico")]
+    public async Task<IActionResult> GetHistorico(string login)
+    {
+        var usuario = await db.Usuarios
+            .FirstOrDefaultAsync(u => u.Login == login);
+
+        if (usuario is null) return NotFound("Participante não encontrado.");
+
+        var historico = await db.Pontuacoes
+            .Include(p => p.Etapa)
+            .Where(p => p.UsuarioId == usuario.Id)
+            .OrderBy(p => p.Etapa.Numero)
+            .Select(p => new HistoricoEtapaDto(
+                p.Etapa.Numero,
+                p.Etapa.Nome,
+                p.Pontos,
+                p.AcertosExatos,
+                p.AcertouPole,
+                p.AcertouMelhorVolta
+            ))
+            .ToListAsync();
+
+        return Ok(historico);
+    }
+
     // GET /api/ranking/ultimo-gp → retorna o nome do último GP com resultado cadastrado
     // Usado no frontend para exibir "Classificação atualizada após o GP de X"
     [HttpGet("ultimo-gp")]

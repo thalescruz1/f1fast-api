@@ -7,6 +7,18 @@
 namespace F1Fast.API.DTOs;
 
 /// <summary>
+/// Pontuação de um participante em uma etapa específica — histórico por corrida.
+/// </summary>
+public record HistoricoEtapaDto(
+    int    EtapaNumero,
+    string EtapaNome,
+    int    Pontos,
+    int    AcertosExatos,
+    bool   AcertouPole,
+    bool   AcertouMelhorVolta
+);
+
+/// <summary>
 /// Um item da tabela de ranking — representa um participante e sua
 /// pontuação acumulada em todas as etapas disputadas até o momento.
 /// A ordem de desempate é: TotalPontos → AcertosMV → AcertosPole → AcertosExatos.
