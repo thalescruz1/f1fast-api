@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using F1Fast.API.Data;
 using F1Fast.API.Services;
+using F1Fast.API.DTOs;
+
 
 namespace F1Fast.API.Controllers;
 
