@@ -111,6 +111,42 @@ public class PalpiteController(AppDbContext db) : ControllerBase
         return palpite is null ? NotFound() : Ok(palpite);
     }
 
+    // GET /api/palpites/{etapaId}/resultado → resultado oficial público (após prazo)
+    // Retorna as posições do resultado oficial ou null se ainda não cadastrado
+    [HttpGet("{etapaId:int}/resultado"), AllowAnonymous]
+    public async Task<IActionResult> GetResultado(int etapaId)
+    {
+        var etapa = await db.Etapas.FindAsync(etapaId);
+        if (etapa is null) return NotFound();
+
+        if (DateTime.UtcNow < etapa.PrazoQualify)
+            return BadRequest("Resultado não disponível antes do prazo.");
+
+        var resultado = await db.Resultados.FirstOrDefaultAsync(r => r.EtapaId == etapaId);
+        if (resultado is null) return NotFound("Resultado ainda não cadastrado.");
+
+        var pilotos = await db.Pilotos
+            .ToDictionaryAsync(p => p.Id, p => $"{p.Numero} — {p.Nome}");
+
+        var posicoes = new[]
+        {
+            pilotos.GetValueOrDefault(resultado.PoleId,        "?"),
+            pilotos.GetValueOrDefault(resultado.Pos1Id,        "?"),
+            pilotos.GetValueOrDefault(resultado.Pos2Id,        "?"),
+            pilotos.GetValueOrDefault(resultado.Pos3Id,        "?"),
+            pilotos.GetValueOrDefault(resultado.Pos4Id,        "?"),
+            pilotos.GetValueOrDefault(resultado.Pos5Id,        "?"),
+            pilotos.GetValueOrDefault(resultado.Pos6Id,        "?"),
+            pilotos.GetValueOrDefault(resultado.Pos7Id,        "?"),
+            pilotos.GetValueOrDefault(resultado.Pos8Id,        "?"),
+            pilotos.GetValueOrDefault(resultado.Pos9Id,        "?"),
+            pilotos.GetValueOrDefault(resultado.Pos10Id,       "?"),
+            pilotos.GetValueOrDefault(resultado.MelhorVoltaId, "?")
+        };
+
+        return Ok(new { posicoes });
+    }
+
     // GET /api/palpites/{etapaId}/publico → palpites de TODOS após o prazo
     // [AllowAnonymous] = sobrescreve o [Authorize] da classe — permite acesso sem login
     [HttpGet("{etapaId:int}/publico"), AllowAnonymous]
