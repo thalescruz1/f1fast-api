@@ -189,7 +189,8 @@ public class PalpiteController(AppDbContext db) : ControllerBase
                     pilotos.GetValueOrDefault(p.Pos10Id,       "?"),
                     pilotos.GetValueOrDefault(p.MelhorVoltaId, "?")
                 },
-                p.PontosObtidos
+                p.PontosObtidos,
+                p.EnviadoEm
             ))
             .ToListAsync();
 

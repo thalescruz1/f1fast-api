@@ -69,5 +69,6 @@ public record PalpitePublicoDto(
     string   Nome,          // Nome do participante
     string[] Posicoes,      // Nomes dos pilotos nas 12 posições:
                             // [0]=Pole, [1]-[10]=Pos1 a Pos10, [11]=MelhorVolta
-    int?     PontosObtidos  // null se a etapa ainda não foi encerrada
+    int?     PontosObtidos, // null se a etapa ainda não foi encerrada
+    DateTime EnviadoEm      // Data/hora em que o palpite foi enviado (ou última atualização)
 );
