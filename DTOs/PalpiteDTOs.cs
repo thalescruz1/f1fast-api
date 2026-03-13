@@ -57,7 +57,6 @@ public record PalpiteRequest(
     [Required] int Pos8Id,
     [Required] int Pos9Id,
     [Required] int Pos10Id,       // Piloto escolhido para 10° lugar
-    [Required] int Pos11Id,       // 11° lugar: necessário para pontuar o palpite de 10° com ±1
     [Required] int MelhorVoltaId  // Piloto escolhido para Melhor Volta
 );
 

@@ -30,5 +30,6 @@ public record ResultadoRequest(
     [Required] int Pos8Id,
     [Required] int Pos9Id,
     [Required] int Pos10Id,       // 10° colocado real
+    [Required] int Pos11Id,       // 11° colocado real (necessário para ±1 na pontuação do 10°)
     [Required] int MelhorVoltaId  // Quem fez a melhor volta real
 );
