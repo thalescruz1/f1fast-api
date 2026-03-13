@@ -57,6 +57,7 @@ public class ResultadoController(AppDbContext db, PontuacaoService pontuacao) : 
                 Pos8Id        = req.Pos8Id,
                 Pos9Id        = req.Pos9Id,
                 Pos10Id       = req.Pos10Id,
+                Pos11Id       = req.Pos11Id,
                 MelhorVoltaId = req.MelhorVoltaId
             });
             await db.SaveChangesAsync();
@@ -75,6 +76,7 @@ public class ResultadoController(AppDbContext db, PontuacaoService pontuacao) : 
             resultado.Pos8Id        = req.Pos8Id;
             resultado.Pos9Id        = req.Pos9Id;
             resultado.Pos10Id       = req.Pos10Id;
+            resultado.Pos11Id       = req.Pos11Id;
             resultado.MelhorVoltaId = req.MelhorVoltaId;
             resultado.InseridoEm    = DateTime.UtcNow;
             await db.SaveChangesAsync();

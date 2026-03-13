@@ -144,7 +144,11 @@ public class PalpiteController(AppDbContext db) : ControllerBase
             pilotos.GetValueOrDefault(resultado.MelhorVoltaId, "?")
         };
 
-        return Ok(new { posicoes });
+        // pos11 é retornado separadamente — não entra no array de posições do palpite,
+        // mas é necessário para pontuar quem chutou 10° com erro de ±1 posição
+        var pos11 = pilotos.GetValueOrDefault(resultado.Pos11Id, "?");
+
+        return Ok(new { posicoes, pos11 });
     }
 
     // GET /api/palpites/{etapaId}/publico → palpites de TODOS após o prazo

@@ -45,6 +45,10 @@ public class Resultado
     public int Pos9Id { get; set; }
     public int Pos10Id { get; set; }
 
+    // 11° lugar: necessário para pontuar corretamente quem chutou o 10° lugar
+    // com erro de ±1 posição (regra: chutou 10°, chegou 11° → +2 pts)
+    public int Pos11Id { get; set; }
+
     // Piloto que fez a melhor volta real da corrida
     public int MelhorVoltaId { get; set; }
 

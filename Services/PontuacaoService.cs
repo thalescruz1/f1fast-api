@@ -78,6 +78,12 @@ public class PontuacaoService(AppDbContext db)
                     // Acerto exato: piloto certo NA posição certa
                     pontos += 3; acertosExatos++;
                 }
+                else if (i == 9 && pilPalpite == resultado.Pos11Id)
+                {
+                    // Caso especial: chutou 10° e o piloto chegou 11°.
+                    // Pos11Id não está no array resultadoPos (top-10), mas o erro é de 1 posição → +2
+                    pontos += 2; acertosUmaPos++;
+                }
                 else if (resultadoPos.Contains(pilPalpite) &&
                          Math.Abs(i - Array.IndexOf(resultadoPos, pilPalpite)) == 1)
                 {
@@ -91,7 +97,7 @@ public class PontuacaoService(AppDbContext db)
                     // Piloto certo, mas posição errada (erro > 1): está no top-10 mas longe
                     pontos += 1; acertosPiloto++;
                 }
-                // Se o piloto escolhido não está no top-10 real → 0 pontos
+                // Se o piloto escolhido não está no top-10 real nem no 11° → 0 pontos
             }
 
             // Atualiza o palpite com os pontos calculados
