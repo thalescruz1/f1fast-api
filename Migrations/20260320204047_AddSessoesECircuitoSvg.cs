@@ -11,36 +11,52 @@ namespace F1Fast.API.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "CircuitoSvg",
-                table: "Etapas",
-                type: "longtext",
-                nullable: false)
-                .Annotation("MySql:CharSet", "utf8mb4");
+            // Adiciona colunas condicionalmente (IF NOT EXISTS) para evitar erro
+            // em bancos que já tenham essas colunas de um deploy anterior.
+            migrationBuilder.Sql(@"
+                SET @dbname = DATABASE();
+                SET @tablename = 'Etapas';
 
-            migrationBuilder.AddColumn<DateTime>(
-                name: "Classificacao",
-                table: "Etapas",
-                type: "datetime(6)",
-                nullable: true);
+                SET @colname = 'CircuitoSvg';
+                SET @preparedStatement = (SELECT IF(
+                    (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = @dbname AND TABLE_NAME = @tablename AND COLUMN_NAME = @colname) > 0,
+                    'SELECT 1',
+                    CONCAT('ALTER TABLE `', @tablename, '` ADD `', @colname, '` longtext CHARACTER SET utf8mb4 NOT NULL;')
+                ));
+                PREPARE addCol FROM @preparedStatement; EXECUTE addCol; DEALLOCATE PREPARE addCol;
 
-            migrationBuilder.AddColumn<DateTime>(
-                name: "TreinoLivre1",
-                table: "Etapas",
-                type: "datetime(6)",
-                nullable: true);
+                SET @colname = 'Classificacao';
+                SET @preparedStatement = (SELECT IF(
+                    (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = @dbname AND TABLE_NAME = @tablename AND COLUMN_NAME = @colname) > 0,
+                    'SELECT 1',
+                    CONCAT('ALTER TABLE `', @tablename, '` ADD `', @colname, '` datetime(6) NULL;')
+                ));
+                PREPARE addCol FROM @preparedStatement; EXECUTE addCol; DEALLOCATE PREPARE addCol;
 
-            migrationBuilder.AddColumn<DateTime>(
-                name: "TreinoLivre2",
-                table: "Etapas",
-                type: "datetime(6)",
-                nullable: true);
+                SET @colname = 'TreinoLivre1';
+                SET @preparedStatement = (SELECT IF(
+                    (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = @dbname AND TABLE_NAME = @tablename AND COLUMN_NAME = @colname) > 0,
+                    'SELECT 1',
+                    CONCAT('ALTER TABLE `', @tablename, '` ADD `', @colname, '` datetime(6) NULL;')
+                ));
+                PREPARE addCol FROM @preparedStatement; EXECUTE addCol; DEALLOCATE PREPARE addCol;
 
-            migrationBuilder.AddColumn<DateTime>(
-                name: "TreinoLivre3",
-                table: "Etapas",
-                type: "datetime(6)",
-                nullable: true);
+                SET @colname = 'TreinoLivre2';
+                SET @preparedStatement = (SELECT IF(
+                    (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = @dbname AND TABLE_NAME = @tablename AND COLUMN_NAME = @colname) > 0,
+                    'SELECT 1',
+                    CONCAT('ALTER TABLE `', @tablename, '` ADD `', @colname, '` datetime(6) NULL;')
+                ));
+                PREPARE addCol FROM @preparedStatement; EXECUTE addCol; DEALLOCATE PREPARE addCol;
+
+                SET @colname = 'TreinoLivre3';
+                SET @preparedStatement = (SELECT IF(
+                    (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = @dbname AND TABLE_NAME = @tablename AND COLUMN_NAME = @colname) > 0,
+                    'SELECT 1',
+                    CONCAT('ALTER TABLE `', @tablename, '` ADD `', @colname, '` datetime(6) NULL;')
+                ));
+                PREPARE addCol FROM @preparedStatement; EXECUTE addCol; DEALLOCATE PREPARE addCol;
+            ");
 
             migrationBuilder.UpdateData(
                 table: "Etapas",
