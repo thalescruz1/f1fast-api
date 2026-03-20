@@ -44,7 +44,12 @@ public record EtapaDto(
     string    Distancia,
     string    Recordista,
     string    TempoRecord,
-    int       AnoRecord
+    int       AnoRecord,
+    DateTime? TreinoLivre1,
+    DateTime? TreinoLivre2,
+    DateTime? TreinoLivre3,
+    DateTime? Classificacao,
+    string    CircuitoSvg
 );
 
 /// <summary>

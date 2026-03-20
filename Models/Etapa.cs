@@ -74,6 +74,16 @@ public class Etapa
 
     public int AnoRecord { get; set; }                     // Ex: 2022
 
+    // Horários das sessões do fim de semana (UTC)
+    // Nullable porque Sprint weekends não têm TL3
+    public DateTime? TreinoLivre1 { get; set; }
+    public DateTime? TreinoLivre2 { get; set; }
+    public DateTime? TreinoLivre3 { get; set; }
+    public DateTime? Classificacao { get; set; }
+
+    // SVG path data do traçado do circuito (renderizado no frontend)
+    public string CircuitoSvg { get; set; } = "";
+
     // true = e-mail de lembrete (quarta-feira) já foi enviado para esta etapa.
     // Evita envios duplicados pelo LembreteBackgroundService.
     public bool LembreteEnviado { get; set; } = false;

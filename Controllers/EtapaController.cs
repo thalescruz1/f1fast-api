@@ -38,7 +38,8 @@ public class EtapaController(AppDbContext db) : ControllerBase
                 e.Encerrada,
                 agora > e.PrazoQualify,
                 e.CircuitoTipo, e.CircuitoComprimento, e.Voltas, e.Distancia,
-                e.Recordista, e.TempoRecord, e.AnoRecord)) // PrazoExpirado: calculado na hora, não fica no banco
+                e.Recordista, e.TempoRecord, e.AnoRecord,
+                e.TreinoLivre1, e.TreinoLivre2, e.TreinoLivre3, e.Classificacao, e.CircuitoSvg))
             .ToListAsync();
 
         return Ok(etapas); // retorna 200 OK com a lista JSON
@@ -62,7 +63,8 @@ public class EtapaController(AppDbContext db) : ControllerBase
                 e.Sprint, e.PrazoQualify, e.DataCorrida,
                 e.Encerrada, false,
                 e.CircuitoTipo, e.CircuitoComprimento, e.Voltas, e.Distancia,
-                e.Recordista, e.TempoRecord, e.AnoRecord)) // PrazoExpirado=false pois ainda está aberto
+                e.Recordista, e.TempoRecord, e.AnoRecord,
+                e.TreinoLivre1, e.TreinoLivre2, e.TreinoLivre3, e.Classificacao, e.CircuitoSvg))
             .FirstOrDefaultAsync(); // null se não houver nenhuma etapa aberta
 
         // Se não houver próxima etapa → 404 Not Found
