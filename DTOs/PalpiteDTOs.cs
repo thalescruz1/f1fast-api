@@ -37,7 +37,14 @@ public record EtapaDto(
     DateTime  PrazoQualify,  // Prazo limite para enviar palpites
     DateTime? DataCorrida,
     bool      Encerrada,
-    bool      PrazoExpirado  // true se DateTime.UtcNow > PrazoQualify (calculado na query)
+    bool      PrazoExpirado, // true se DateTime.UtcNow > PrazoQualify (calculado na query)
+    string    CircuitoTipo,
+    string    CircuitoComprimento,
+    int       Voltas,
+    string    Distancia,
+    string    Recordista,
+    string    TempoRecord,
+    int       AnoRecord
 );
 
 /// <summary>

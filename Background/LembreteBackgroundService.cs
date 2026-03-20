@@ -8,8 +8,9 @@
 // do .NET para tarefas que rodam em loop na aplicação.
 //
 // Funcionamento:
-//   A cada 30 minutos, chama o NotificacaoService para verificar
-//   se alguma corrida tem prazo próximo e enviar e-mails de aviso.
+//   A cada 30 minutos, chama o NotificacaoService para:
+//   1) Enviar lembretes de quarta-feira (09:00 UTC, antes da corrida)
+//   2) Enviar lembretes urgentes (30 min antes do PrazoQualify)
 // ============================================================
 
 using F1Fast.API.Services;
@@ -41,8 +42,11 @@ public class LembreteBackgroundService(
                 using var scope = factory.CreateScope();
                 var svc = scope.ServiceProvider.GetRequiredService<NotificacaoService>();
 
-                // Executa a verificação de lembretes
+                // 1) Lembrete de quarta-feira (09:00 UTC)
                 await svc.EnviarLembretesAsync();
+
+                // 2) Lembrete urgente (30 min antes do PrazoQualify)
+                await svc.EnviarLembretesUrgentesAsync();
             }
             catch (Exception ex)
             {

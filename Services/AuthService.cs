@@ -101,12 +101,7 @@ public class AuthService(AppDbContext db, IConfiguration config, ILogger<AuthSer
             await EnviarEmailAsync(
                 para:    user.Email,
                 assunto: "F1Fast — Redefinição de senha",
-                corpo:   $"Olá {user.Nome},\n\n" +
-                         $"Recebemos uma solicitação para redefinir sua senha.\n\n" +
-                         $"Clique no link abaixo para criar uma nova senha (válido por 1 hora):\n\n" +
-                         $"{link}\n\n" +
-                         $"Se você não solicitou isso, ignore este e-mail.\n\n" +
-                         $"— Equipe F1Fast"
+                corpo:   GerarEmailResetHtml(user.Nome, link)
             );
         }
         catch (Exception ex)
@@ -172,7 +167,7 @@ public class AuthService(AppDbContext db, IConfiguration config, ILogger<AuthSer
     }
 
     /// <summary>
-    /// Envia um e-mail via SMTP usando as configurações do appsettings.json.
+    /// Envia um e-mail HTML via SMTP usando as configurações do appsettings.json.
     /// </summary>
     private async Task EnviarEmailAsync(string para, string assunto, string corpo)
     {
@@ -181,9 +176,74 @@ public class AuthService(AppDbContext db, IConfiguration config, ILogger<AuthSer
             config["Smtp:Host"], int.Parse(config["Smtp:Port"]!));
 
         client.Credentials = new System.Net.NetworkCredential(config["Smtp:User"], config["Smtp:Pass"]);
-        client.EnableSsl   = false; // usa TLS/SSL para envio seguro
+        client.EnableSsl   = true; // conexão segura (TLS)
 
-        await client.SendMailAsync(
-            new MailMessage(config["Smtp:From"]!, para, assunto, corpo));
+        var message = new MailMessage(config["Smtp:From"]!, para, assunto, corpo)
+        {
+            IsBodyHtml = true // envia como HTML formatado
+        };
+
+        await client.SendMailAsync(message);
     }
+
+    /// <summary>
+    /// Gera o HTML do e-mail de redefinição de senha com layout F1Fast.
+    /// </summary>
+    private static string GerarEmailResetHtml(string nome, string link) => $@"
+<!DOCTYPE html>
+<html>
+<head><meta charset=""utf-8""></head>
+<body style=""margin:0;padding:0;background-color:#1A1A1A;font-family:Inter,Arial,sans-serif;"">
+<table role=""presentation"" width=""100%"" cellpadding=""0"" cellspacing=""0"" style=""background-color:#1A1A1A;padding:32px 16px;"">
+<tr><td align=""center"">
+<table role=""presentation"" width=""600"" cellpadding=""0"" cellspacing=""0"" style=""max-width:600px;width:100%;border-radius:8px;overflow:hidden;"">
+
+  <!-- Barra vermelha F1 -->
+  <tr><td style=""background-color:#E10600;height:4px;font-size:0;line-height:0;"">&nbsp;</td></tr>
+
+  <!-- Header escuro com logo -->
+  <tr><td style=""background-color:#1A1A1A;padding:24px 32px;text-align:center;"">
+    <img src=""https://novo.f1fast.com.br/logo.png"" alt=""F1Fast"" width=""48"" style=""display:inline-block;vertical-align:middle;margin-right:12px;"" />
+    <span style=""font-family:'Arial Black',Impact,sans-serif;font-size:24px;color:#FFFFFF;letter-spacing:3px;vertical-align:middle;"">F1FAST</span>
+  </td></tr>
+
+  <!-- Corpo branco -->
+  <tr><td style=""background-color:#FFFFFF;padding:40px 32px;"">
+    <p style=""margin:0 0 8px;font-size:14px;color:#9E9E9E;text-transform:uppercase;letter-spacing:2px;"">🔒 Redefinição de senha</p>
+    <h1 style=""margin:0 0 24px;font-size:22px;color:#1A1A1A;font-weight:700;"">Olá, {nome}!</h1>
+    <p style=""margin:0 0 16px;font-size:15px;color:#333333;line-height:1.6;"">
+      Recebemos uma solicitação para redefinir sua senha. Clique no botão abaixo para criar uma nova senha:
+    </p>
+
+    <!-- Botão CTA -->
+    <table role=""presentation"" cellpadding=""0"" cellspacing=""0"" style=""margin:32px auto;"">
+    <tr><td style=""background-color:#0057E1;border-radius:6px;"">
+      <a href=""{link}"" target=""_blank"" style=""display:inline-block;padding:14px 32px;color:#FFFFFF;text-decoration:none;font-family:'Arial Black',Impact,sans-serif;font-size:14px;letter-spacing:2px;text-transform:uppercase;"">
+        REDEFINIR MINHA SENHA
+      </a>
+    </td></tr>
+    </table>
+
+    <p style=""margin:0 0 8px;font-size:13px;color:#E10600;text-align:center;font-weight:600;"">⏱ Este link expira em 1 hora</p>
+
+    <!-- Divisor -->
+    <hr style=""border:none;border-top:1px solid #EBEBEB;margin:24px 0;"" />
+
+    <p style=""margin:0;font-size:13px;color:#9E9E9E;line-height:1.5;"">
+      Se você não solicitou a redefinição de senha, ignore este e-mail. Sua senha permanecerá a mesma.
+    </p>
+  </td></tr>
+
+  <!-- Footer -->
+  <tr><td style=""background-color:#F3F3F3;padding:20px 32px;text-align:center;"">
+    <p style=""margin:0;font-size:12px;color:#9E9E9E;"">
+      © {DateTime.UtcNow.Year} F1Fast — Todos os direitos reservados
+    </p>
+  </td></tr>
+
+</table>
+</td></tr>
+</table>
+</body>
+</html>";
 }

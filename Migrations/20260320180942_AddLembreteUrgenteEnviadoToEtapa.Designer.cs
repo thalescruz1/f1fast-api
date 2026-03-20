@@ -3,6 +3,7 @@ using System;
 using F1Fast.API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace F1Fast.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260320180942_AddLembreteUrgenteEnviadoToEtapa")]
+    partial class AddLembreteUrgenteEnviadoToEtapa
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -114,9 +117,6 @@ namespace F1Fast.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("AnoRecord")
-                        .HasColumnType("int");
-
                     b.Property<string>("Cidade")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -127,23 +127,8 @@ namespace F1Fast.API.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<string>("CircuitoComprimento")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("varchar(20)");
-
-                    b.Property<string>("CircuitoTipo")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
-
                     b.Property<DateTime?>("DataCorrida")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<string>("Distancia")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("varchar(20)");
 
                     b.Property<bool>("Encerrada")
                         .HasColumnType("tinyint(1)");
@@ -170,21 +155,8 @@ namespace F1Fast.API.Migrations
                     b.Property<DateTime>("PrazoQualify")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("Recordista")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
-
                     b.Property<bool>("Sprint")
                         .HasColumnType("tinyint(1)");
-
-                    b.Property<string>("TempoRecord")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("varchar(20)");
-
-                    b.Property<int>("Voltas")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -194,13 +166,9 @@ namespace F1Fast.API.Migrations
                         new
                         {
                             Id = 1,
-                            AnoRecord = 2022,
                             Cidade = "Melbourne",
                             Circuito = "Albert Park",
-                            CircuitoComprimento = "5.278 km",
-                            CircuitoTipo = "Circuito semi-permanente",
                             DataCorrida = new DateTime(2026, 3, 8, 1, 0, 0, 0, DateTimeKind.Utc),
-                            Distancia = "306.1 km",
                             Encerrada = false,
                             LembreteEnviado = false,
                             LembreteUrgenteEnviado = false,
@@ -208,21 +176,14 @@ namespace F1Fast.API.Migrations
                             Numero = 1,
                             Pais = "🇦🇺",
                             PrazoQualify = new DateTime(2026, 3, 7, 2, 0, 0, 0, DateTimeKind.Utc),
-                            Recordista = "Charles Leclerc",
-                            Sprint = false,
-                            TempoRecord = "1:19.813",
-                            Voltas = 58
+                            Sprint = false
                         },
                         new
                         {
                             Id = 2,
-                            AnoRecord = 2004,
                             Cidade = "Changai",
                             Circuito = "Changai",
-                            CircuitoComprimento = "5.451 km",
-                            CircuitoTipo = "Circuito permanente",
                             DataCorrida = new DateTime(2026, 3, 13, 4, 30, 0, 0, DateTimeKind.Utc),
-                            Distancia = "103.6 km",
                             Encerrada = false,
                             LembreteEnviado = false,
                             LembreteUrgenteEnviado = false,
@@ -230,21 +191,14 @@ namespace F1Fast.API.Migrations
                             Numero = 2,
                             Pais = "🇨🇳",
                             PrazoQualify = new DateTime(2026, 3, 13, 4, 30, 0, 0, DateTimeKind.Utc),
-                            Recordista = "Michael Schumacher",
-                            Sprint = true,
-                            TempoRecord = "1:32.238",
-                            Voltas = 19
+                            Sprint = true
                         },
                         new
                         {
                             Id = 3,
-                            AnoRecord = 2004,
                             Cidade = "Changai",
                             Circuito = "Changai",
-                            CircuitoComprimento = "5.451 km",
-                            CircuitoTipo = "Circuito permanente",
                             DataCorrida = new DateTime(2026, 3, 14, 4, 0, 0, 0, DateTimeKind.Utc),
-                            Distancia = "305.1 km",
                             Encerrada = false,
                             LembreteEnviado = false,
                             LembreteUrgenteEnviado = false,
@@ -252,21 +206,14 @@ namespace F1Fast.API.Migrations
                             Numero = 3,
                             Pais = "🇨🇳",
                             PrazoQualify = new DateTime(2026, 3, 14, 4, 0, 0, 0, DateTimeKind.Utc),
-                            Recordista = "Michael Schumacher",
-                            Sprint = false,
-                            TempoRecord = "1:32.238",
-                            Voltas = 56
+                            Sprint = false
                         },
                         new
                         {
                             Id = 4,
-                            AnoRecord = 2019,
                             Cidade = "Suzuka",
                             Circuito = "Suzuka",
-                            CircuitoComprimento = "5.807 km",
-                            CircuitoTipo = "Circuito permanente",
                             DataCorrida = new DateTime(2026, 3, 28, 3, 0, 0, 0, DateTimeKind.Utc),
-                            Distancia = "307.5 km",
                             Encerrada = false,
                             LembreteEnviado = false,
                             LembreteUrgenteEnviado = false,
@@ -274,21 +221,14 @@ namespace F1Fast.API.Migrations
                             Numero = 4,
                             Pais = "🇯🇵",
                             PrazoQualify = new DateTime(2026, 3, 28, 3, 0, 0, 0, DateTimeKind.Utc),
-                            Recordista = "Lewis Hamilton",
-                            Sprint = false,
-                            TempoRecord = "1:30.983",
-                            Voltas = 53
+                            Sprint = false
                         },
                         new
                         {
                             Id = 5,
-                            AnoRecord = 2005,
                             Cidade = "Sakhir",
                             Circuito = "Sakhir",
-                            CircuitoComprimento = "5.412 km",
-                            CircuitoTipo = "Circuito permanente (iluminado)",
                             DataCorrida = new DateTime(2026, 4, 11, 12, 0, 0, 0, DateTimeKind.Utc),
-                            Distancia = "308.2 km",
                             Encerrada = false,
                             LembreteEnviado = false,
                             LembreteUrgenteEnviado = false,
@@ -296,21 +236,14 @@ namespace F1Fast.API.Migrations
                             Numero = 5,
                             Pais = "🇧🇭",
                             PrazoQualify = new DateTime(2026, 4, 11, 12, 0, 0, 0, DateTimeKind.Utc),
-                            Recordista = "Pedro de la Rosa",
-                            Sprint = false,
-                            TempoRecord = "1:30.252",
-                            Voltas = 57
+                            Sprint = false
                         },
                         new
                         {
                             Id = 6,
-                            AnoRecord = 2023,
                             Cidade = "Jeddah",
                             Circuito = "Jeddah",
-                            CircuitoComprimento = "6.174 km",
-                            CircuitoTipo = "Circuito de rua",
                             DataCorrida = new DateTime(2026, 4, 18, 14, 0, 0, 0, DateTimeKind.Utc),
-                            Distancia = "308.5 km",
                             Encerrada = false,
                             LembreteEnviado = false,
                             LembreteUrgenteEnviado = false,
@@ -318,21 +251,14 @@ namespace F1Fast.API.Migrations
                             Numero = 6,
                             Pais = "🇸🇦",
                             PrazoQualify = new DateTime(2026, 4, 18, 14, 0, 0, 0, DateTimeKind.Utc),
-                            Recordista = "Sergio Perez",
-                            Sprint = false,
-                            TempoRecord = "1:30.734",
-                            Voltas = 50
+                            Sprint = false
                         },
                         new
                         {
                             Id = 7,
-                            AnoRecord = 2023,
                             Cidade = "Miami",
                             Circuito = "Miami",
-                            CircuitoComprimento = "5.412 km",
-                            CircuitoTipo = "Circuito semi-permanente",
                             DataCorrida = new DateTime(2026, 5, 1, 17, 30, 0, 0, DateTimeKind.Utc),
-                            Distancia = "97.4 km",
                             Encerrada = false,
                             LembreteEnviado = false,
                             LembreteUrgenteEnviado = false,
@@ -340,21 +266,14 @@ namespace F1Fast.API.Migrations
                             Numero = 7,
                             Pais = "🇺🇸",
                             PrazoQualify = new DateTime(2026, 5, 1, 17, 30, 0, 0, DateTimeKind.Utc),
-                            Recordista = "Max Verstappen",
-                            Sprint = true,
-                            TempoRecord = "1:27.274",
-                            Voltas = 18
+                            Sprint = true
                         },
                         new
                         {
                             Id = 8,
-                            AnoRecord = 2023,
                             Cidade = "Miami",
                             Circuito = "Miami",
-                            CircuitoComprimento = "5.412 km",
-                            CircuitoTipo = "Circuito semi-permanente",
                             DataCorrida = new DateTime(2026, 5, 2, 17, 0, 0, 0, DateTimeKind.Utc),
-                            Distancia = "308.3 km",
                             Encerrada = false,
                             LembreteEnviado = false,
                             LembreteUrgenteEnviado = false,
@@ -362,21 +281,14 @@ namespace F1Fast.API.Migrations
                             Numero = 8,
                             Pais = "🇺🇸",
                             PrazoQualify = new DateTime(2026, 5, 2, 17, 0, 0, 0, DateTimeKind.Utc),
-                            Recordista = "Max Verstappen",
-                            Sprint = false,
-                            TempoRecord = "1:27.274",
-                            Voltas = 57
+                            Sprint = false
                         },
                         new
                         {
                             Id = 9,
-                            AnoRecord = 2019,
                             Cidade = "Montreal",
                             Circuito = "Montreal",
-                            CircuitoComprimento = "4.361 km",
-                            CircuitoTipo = "Circuito semi-permanente",
                             DataCorrida = new DateTime(2026, 5, 22, 17, 30, 0, 0, DateTimeKind.Utc),
-                            Distancia = "100.3 km",
                             Encerrada = false,
                             LembreteEnviado = false,
                             LembreteUrgenteEnviado = false,
@@ -384,21 +296,14 @@ namespace F1Fast.API.Migrations
                             Numero = 9,
                             Pais = "🇨🇦",
                             PrazoQualify = new DateTime(2026, 5, 22, 17, 30, 0, 0, DateTimeKind.Utc),
-                            Recordista = "Valtteri Bottas",
-                            Sprint = true,
-                            TempoRecord = "1:13.078",
-                            Voltas = 23
+                            Sprint = true
                         },
                         new
                         {
                             Id = 10,
-                            AnoRecord = 2019,
                             Cidade = "Montreal",
                             Circuito = "Montreal",
-                            CircuitoComprimento = "4.361 km",
-                            CircuitoTipo = "Circuito semi-permanente",
                             DataCorrida = new DateTime(2026, 5, 23, 17, 0, 0, 0, DateTimeKind.Utc),
-                            Distancia = "305.3 km",
                             Encerrada = false,
                             LembreteEnviado = false,
                             LembreteUrgenteEnviado = false,
@@ -406,21 +311,14 @@ namespace F1Fast.API.Migrations
                             Numero = 10,
                             Pais = "🇨🇦",
                             PrazoQualify = new DateTime(2026, 5, 23, 17, 0, 0, 0, DateTimeKind.Utc),
-                            Recordista = "Valtteri Bottas",
-                            Sprint = false,
-                            TempoRecord = "1:13.078",
-                            Voltas = 70
+                            Sprint = false
                         },
                         new
                         {
                             Id = 11,
-                            AnoRecord = 2021,
                             Cidade = "Monte Carlo",
                             Circuito = "Monte Carlo",
-                            CircuitoComprimento = "3.337 km",
-                            CircuitoTipo = "Circuito de rua",
                             DataCorrida = new DateTime(2026, 6, 6, 11, 0, 0, 0, DateTimeKind.Utc),
-                            Distancia = "260.3 km",
                             Encerrada = false,
                             LembreteEnviado = false,
                             LembreteUrgenteEnviado = false,
@@ -428,21 +326,14 @@ namespace F1Fast.API.Migrations
                             Numero = 11,
                             Pais = "🇲🇨",
                             PrazoQualify = new DateTime(2026, 6, 6, 11, 0, 0, 0, DateTimeKind.Utc),
-                            Recordista = "Charles Leclerc",
-                            Sprint = false,
-                            TempoRecord = "1:12.909",
-                            Voltas = 78
+                            Sprint = false
                         },
                         new
                         {
                             Id = 12,
-                            AnoRecord = 2023,
                             Cidade = "Barcelona",
                             Circuito = "Catalunia",
-                            CircuitoComprimento = "4.657 km",
-                            CircuitoTipo = "Circuito permanente",
                             DataCorrida = new DateTime(2026, 6, 13, 11, 0, 0, 0, DateTimeKind.Utc),
-                            Distancia = "307.3 km",
                             Encerrada = false,
                             LembreteEnviado = false,
                             LembreteUrgenteEnviado = false,
@@ -450,21 +341,14 @@ namespace F1Fast.API.Migrations
                             Numero = 12,
                             Pais = "🇪🇸",
                             PrazoQualify = new DateTime(2026, 6, 13, 11, 0, 0, 0, DateTimeKind.Utc),
-                            Recordista = "Max Verstappen",
-                            Sprint = false,
-                            TempoRecord = "1:16.330",
-                            Voltas = 66
+                            Sprint = false
                         },
                         new
                         {
                             Id = 13,
-                            AnoRecord = 2020,
                             Cidade = "Spielberg",
                             Circuito = "Red Bull Ring",
-                            CircuitoComprimento = "4.318 km",
-                            CircuitoTipo = "Circuito permanente",
                             DataCorrida = new DateTime(2026, 6, 27, 11, 0, 0, 0, DateTimeKind.Utc),
-                            Distancia = "306.5 km",
                             Encerrada = false,
                             LembreteEnviado = false,
                             LembreteUrgenteEnviado = false,
@@ -472,21 +356,14 @@ namespace F1Fast.API.Migrations
                             Numero = 13,
                             Pais = "🇦🇹",
                             PrazoQualify = new DateTime(2026, 6, 27, 11, 0, 0, 0, DateTimeKind.Utc),
-                            Recordista = "Carlos Sainz",
-                            Sprint = false,
-                            TempoRecord = "1:05.619",
-                            Voltas = 71
+                            Sprint = false
                         },
                         new
                         {
                             Id = 14,
-                            AnoRecord = 2020,
                             Cidade = "Silverstone",
                             Circuito = "Silverstone",
-                            CircuitoComprimento = "5.891 km",
-                            CircuitoTipo = "Circuito permanente",
                             DataCorrida = new DateTime(2026, 7, 3, 12, 30, 0, 0, DateTimeKind.Utc),
-                            Distancia = "100.1 km",
                             Encerrada = false,
                             LembreteEnviado = false,
                             LembreteUrgenteEnviado = false,
@@ -494,21 +371,14 @@ namespace F1Fast.API.Migrations
                             Numero = 14,
                             Pais = "🇬🇧",
                             PrazoQualify = new DateTime(2026, 7, 3, 12, 30, 0, 0, DateTimeKind.Utc),
-                            Recordista = "Lewis Hamilton",
-                            Sprint = true,
-                            TempoRecord = "1:24.303",
-                            Voltas = 17
+                            Sprint = true
                         },
                         new
                         {
                             Id = 15,
-                            AnoRecord = 2020,
                             Cidade = "Silverstone",
                             Circuito = "Silverstone",
-                            CircuitoComprimento = "5.891 km",
-                            CircuitoTipo = "Circuito permanente",
                             DataCorrida = new DateTime(2026, 7, 4, 12, 0, 0, 0, DateTimeKind.Utc),
-                            Distancia = "306.2 km",
                             Encerrada = false,
                             LembreteEnviado = false,
                             LembreteUrgenteEnviado = false,
@@ -516,21 +386,14 @@ namespace F1Fast.API.Migrations
                             Numero = 15,
                             Pais = "🇬🇧",
                             PrazoQualify = new DateTime(2026, 7, 4, 12, 0, 0, 0, DateTimeKind.Utc),
-                            Recordista = "Lewis Hamilton",
-                            Sprint = false,
-                            TempoRecord = "1:24.303",
-                            Voltas = 52
+                            Sprint = false
                         },
                         new
                         {
                             Id = 16,
-                            AnoRecord = 2018,
                             Cidade = "Spa",
                             Circuito = "Spa-Francorchamps",
-                            CircuitoComprimento = "7.004 km",
-                            CircuitoTipo = "Circuito permanente",
                             DataCorrida = new DateTime(2026, 7, 18, 11, 0, 0, 0, DateTimeKind.Utc),
-                            Distancia = "308.1 km",
                             Encerrada = false,
                             LembreteEnviado = false,
                             LembreteUrgenteEnviado = false,
@@ -538,21 +401,14 @@ namespace F1Fast.API.Migrations
                             Numero = 16,
                             Pais = "🇧🇪",
                             PrazoQualify = new DateTime(2026, 7, 18, 11, 0, 0, 0, DateTimeKind.Utc),
-                            Recordista = "Valtteri Bottas",
-                            Sprint = false,
-                            TempoRecord = "1:46.286",
-                            Voltas = 44
+                            Sprint = false
                         },
                         new
                         {
                             Id = 17,
-                            AnoRecord = 2020,
                             Cidade = "Budapest",
                             Circuito = "Hungaroring",
-                            CircuitoComprimento = "4.381 km",
-                            CircuitoTipo = "Circuito permanente",
                             DataCorrida = new DateTime(2026, 7, 25, 11, 0, 0, 0, DateTimeKind.Utc),
-                            Distancia = "306.6 km",
                             Encerrada = false,
                             LembreteEnviado = false,
                             LembreteUrgenteEnviado = false,
@@ -560,21 +416,14 @@ namespace F1Fast.API.Migrations
                             Numero = 17,
                             Pais = "🇭🇺",
                             PrazoQualify = new DateTime(2026, 7, 25, 11, 0, 0, 0, DateTimeKind.Utc),
-                            Recordista = "Lewis Hamilton",
-                            Sprint = false,
-                            TempoRecord = "1:16.627",
-                            Voltas = 70
+                            Sprint = false
                         },
                         new
                         {
                             Id = 18,
-                            AnoRecord = 2021,
                             Cidade = "Zandvoort",
                             Circuito = "Zandvoort",
-                            CircuitoComprimento = "4.259 km",
-                            CircuitoTipo = "Circuito permanente",
                             DataCorrida = new DateTime(2026, 8, 21, 11, 30, 0, 0, DateTimeKind.Utc),
-                            Distancia = "102.2 km",
                             Encerrada = false,
                             LembreteEnviado = false,
                             LembreteUrgenteEnviado = false,
@@ -582,21 +431,14 @@ namespace F1Fast.API.Migrations
                             Numero = 18,
                             Pais = "🇳🇱",
                             PrazoQualify = new DateTime(2026, 8, 21, 11, 30, 0, 0, DateTimeKind.Utc),
-                            Recordista = "Max Verstappen",
-                            Sprint = true,
-                            TempoRecord = "1:11.097",
-                            Voltas = 24
+                            Sprint = true
                         },
                         new
                         {
                             Id = 19,
-                            AnoRecord = 2021,
                             Cidade = "Zandvoort",
                             Circuito = "Zandvoort",
-                            CircuitoComprimento = "4.259 km",
-                            CircuitoTipo = "Circuito permanente",
                             DataCorrida = new DateTime(2026, 8, 22, 11, 0, 0, 0, DateTimeKind.Utc),
-                            Distancia = "306.6 km",
                             Encerrada = false,
                             LembreteEnviado = false,
                             LembreteUrgenteEnviado = false,
@@ -604,21 +446,14 @@ namespace F1Fast.API.Migrations
                             Numero = 19,
                             Pais = "🇳🇱",
                             PrazoQualify = new DateTime(2026, 8, 22, 11, 0, 0, 0, DateTimeKind.Utc),
-                            Recordista = "Max Verstappen",
-                            Sprint = false,
-                            TempoRecord = "1:11.097",
-                            Voltas = 72
+                            Sprint = false
                         },
                         new
                         {
                             Id = 20,
-                            AnoRecord = 2004,
                             Cidade = "Monza",
                             Circuito = "Monza",
-                            CircuitoComprimento = "5.793 km",
-                            CircuitoTipo = "Circuito permanente (alta velocidade)",
                             DataCorrida = new DateTime(2026, 9, 5, 11, 0, 0, 0, DateTimeKind.Utc),
-                            Distancia = "306.7 km",
                             Encerrada = false,
                             LembreteEnviado = false,
                             LembreteUrgenteEnviado = false,
@@ -626,21 +461,14 @@ namespace F1Fast.API.Migrations
                             Numero = 20,
                             Pais = "🇮🇹",
                             PrazoQualify = new DateTime(2026, 9, 5, 11, 0, 0, 0, DateTimeKind.Utc),
-                            Recordista = "Rubens Barrichello",
-                            Sprint = false,
-                            TempoRecord = "1:21.046",
-                            Voltas = 53
+                            Sprint = false
                         },
                         new
                         {
                             Id = 21,
-                            AnoRecord = 2026,
                             Cidade = "Madri",
                             Circuito = "Madri",
-                            CircuitoComprimento = "5.474 km",
-                            CircuitoTipo = "Circuito semi-permanente",
                             DataCorrida = new DateTime(2026, 9, 12, 11, 0, 0, 0, DateTimeKind.Utc),
-                            Distancia = "306.5 km",
                             Encerrada = false,
                             LembreteEnviado = false,
                             LembreteUrgenteEnviado = false,
@@ -648,21 +476,14 @@ namespace F1Fast.API.Migrations
                             Numero = 21,
                             Pais = "🇪🇸",
                             PrazoQualify = new DateTime(2026, 9, 12, 11, 0, 0, 0, DateTimeKind.Utc),
-                            Recordista = "—",
-                            Sprint = false,
-                            TempoRecord = "—",
-                            Voltas = 56
+                            Sprint = false
                         },
                         new
                         {
                             Id = 22,
-                            AnoRecord = 2019,
                             Cidade = "Baku",
                             Circuito = "Baku",
-                            CircuitoComprimento = "6.003 km",
-                            CircuitoTipo = "Circuito de rua",
                             DataCorrida = new DateTime(2026, 9, 25, 9, 0, 0, 0, DateTimeKind.Utc),
-                            Distancia = "306.0 km",
                             Encerrada = false,
                             LembreteEnviado = false,
                             LembreteUrgenteEnviado = false,
@@ -670,21 +491,14 @@ namespace F1Fast.API.Migrations
                             Numero = 22,
                             Pais = "🇦🇿",
                             PrazoQualify = new DateTime(2026, 9, 25, 9, 0, 0, 0, DateTimeKind.Utc),
-                            Recordista = "Charles Leclerc",
-                            Sprint = false,
-                            TempoRecord = "1:43.009",
-                            Voltas = 51
+                            Sprint = false
                         },
                         new
                         {
                             Id = 23,
-                            AnoRecord = 2023,
                             Cidade = "Singapura",
                             Circuito = "Marina Bay",
-                            CircuitoComprimento = "4.940 km",
-                            CircuitoTipo = "Circuito de rua (noturno)",
                             DataCorrida = new DateTime(2026, 10, 9, 9, 30, 0, 0, DateTimeKind.Utc),
-                            Distancia = "103.7 km",
                             Encerrada = false,
                             LembreteEnviado = false,
                             LembreteUrgenteEnviado = false,
@@ -692,21 +506,14 @@ namespace F1Fast.API.Migrations
                             Numero = 23,
                             Pais = "🇸🇬",
                             PrazoQualify = new DateTime(2026, 10, 9, 9, 30, 0, 0, DateTimeKind.Utc),
-                            Recordista = "Lewis Hamilton",
-                            Sprint = true,
-                            TempoRecord = "1:35.867",
-                            Voltas = 21
+                            Sprint = true
                         },
                         new
                         {
                             Id = 24,
-                            AnoRecord = 2023,
                             Cidade = "Singapura",
                             Circuito = "Marina Bay",
-                            CircuitoComprimento = "4.940 km",
-                            CircuitoTipo = "Circuito de rua (noturno)",
                             DataCorrida = new DateTime(2026, 10, 10, 10, 0, 0, 0, DateTimeKind.Utc),
-                            Distancia = "306.1 km",
                             Encerrada = false,
                             LembreteEnviado = false,
                             LembreteUrgenteEnviado = false,
@@ -714,21 +521,14 @@ namespace F1Fast.API.Migrations
                             Numero = 24,
                             Pais = "🇸🇬",
                             PrazoQualify = new DateTime(2026, 10, 10, 10, 0, 0, 0, DateTimeKind.Utc),
-                            Recordista = "Lewis Hamilton",
-                            Sprint = false,
-                            TempoRecord = "1:35.867",
-                            Voltas = 62
+                            Sprint = false
                         },
                         new
                         {
                             Id = 25,
-                            AnoRecord = 2023,
                             Cidade = "Austin",
                             Circuito = "Austin",
-                            CircuitoComprimento = "5.513 km",
-                            CircuitoTipo = "Circuito permanente",
                             DataCorrida = new DateTime(2026, 10, 24, 18, 0, 0, 0, DateTimeKind.Utc),
-                            Distancia = "308.4 km",
                             Encerrada = false,
                             LembreteEnviado = false,
                             LembreteUrgenteEnviado = false,
@@ -736,21 +536,14 @@ namespace F1Fast.API.Migrations
                             Numero = 25,
                             Pais = "🇺🇸",
                             PrazoQualify = new DateTime(2026, 10, 24, 18, 0, 0, 0, DateTimeKind.Utc),
-                            Recordista = "Charles Leclerc",
-                            Sprint = false,
-                            TempoRecord = "1:36.169",
-                            Voltas = 56
+                            Sprint = false
                         },
                         new
                         {
                             Id = 26,
-                            AnoRecord = 2021,
                             Cidade = "Cidade do México",
                             Circuito = "Cidade do México",
-                            CircuitoComprimento = "4.304 km",
-                            CircuitoTipo = "Circuito permanente (alta altitude)",
                             DataCorrida = new DateTime(2026, 10, 31, 18, 0, 0, 0, DateTimeKind.Utc),
-                            Distancia = "305.4 km",
                             Encerrada = false,
                             LembreteEnviado = false,
                             LembreteUrgenteEnviado = false,
@@ -758,21 +551,14 @@ namespace F1Fast.API.Migrations
                             Numero = 26,
                             Pais = "🇲🇽",
                             PrazoQualify = new DateTime(2026, 10, 31, 18, 0, 0, 0, DateTimeKind.Utc),
-                            Recordista = "Valtteri Bottas",
-                            Sprint = false,
-                            TempoRecord = "1:17.774",
-                            Voltas = 71
+                            Sprint = false
                         },
                         new
                         {
                             Id = 27,
-                            AnoRecord = 2018,
                             Cidade = "São Paulo",
                             Circuito = "Interlagos",
-                            CircuitoComprimento = "4.309 km",
-                            CircuitoTipo = "Circuito permanente",
                             DataCorrida = new DateTime(2026, 11, 7, 15, 0, 0, 0, DateTimeKind.Utc),
-                            Distancia = "305.9 km",
                             Encerrada = false,
                             LembreteEnviado = false,
                             LembreteUrgenteEnviado = false,
@@ -780,21 +566,14 @@ namespace F1Fast.API.Migrations
                             Numero = 27,
                             Pais = "🇧🇷",
                             PrazoQualify = new DateTime(2026, 11, 7, 15, 0, 0, 0, DateTimeKind.Utc),
-                            Recordista = "Valtteri Bottas",
-                            Sprint = false,
-                            TempoRecord = "1:10.540",
-                            Voltas = 71
+                            Sprint = false
                         },
                         new
                         {
                             Id = 28,
-                            AnoRecord = 2023,
                             Cidade = "Las Vegas",
                             Circuito = "Las Vegas",
-                            CircuitoComprimento = "6.201 km",
-                            CircuitoTipo = "Circuito de rua (noturno)",
                             DataCorrida = new DateTime(2026, 11, 21, 1, 0, 0, 0, DateTimeKind.Utc),
-                            Distancia = "310.0 km",
                             Encerrada = false,
                             LembreteEnviado = false,
                             LembreteUrgenteEnviado = false,
@@ -802,21 +581,14 @@ namespace F1Fast.API.Migrations
                             Numero = 28,
                             Pais = "🇺🇸",
                             PrazoQualify = new DateTime(2026, 11, 21, 1, 0, 0, 0, DateTimeKind.Utc),
-                            Recordista = "Max Verstappen",
-                            Sprint = false,
-                            TempoRecord = "1:35.490",
-                            Voltas = 50
+                            Sprint = false
                         },
                         new
                         {
                             Id = 29,
-                            AnoRecord = 2023,
                             Cidade = "Lusail",
                             Circuito = "Lusail",
-                            CircuitoComprimento = "5.380 km",
-                            CircuitoTipo = "Circuito permanente (noturno)",
                             DataCorrida = new DateTime(2026, 11, 28, 15, 0, 0, 0, DateTimeKind.Utc),
-                            Distancia = "306.6 km",
                             Encerrada = false,
                             LembreteEnviado = false,
                             LembreteUrgenteEnviado = false,
@@ -824,21 +596,14 @@ namespace F1Fast.API.Migrations
                             Numero = 29,
                             Pais = "🇶🇦",
                             PrazoQualify = new DateTime(2026, 11, 28, 15, 0, 0, 0, DateTimeKind.Utc),
-                            Recordista = "Charles Leclerc",
-                            Sprint = false,
-                            TempoRecord = "1:24.319",
-                            Voltas = 57
+                            Sprint = false
                         },
                         new
                         {
                             Id = 30,
-                            AnoRecord = 2021,
                             Cidade = "Abu Dhabi",
                             Circuito = "Yas Marina",
-                            CircuitoComprimento = "5.281 km",
-                            CircuitoTipo = "Circuito permanente",
                             DataCorrida = new DateTime(2026, 12, 5, 11, 0, 0, 0, DateTimeKind.Utc),
-                            Distancia = "306.2 km",
                             Encerrada = false,
                             LembreteEnviado = false,
                             LembreteUrgenteEnviado = false,
@@ -846,10 +611,7 @@ namespace F1Fast.API.Migrations
                             Numero = 30,
                             Pais = "🇦🇪",
                             PrazoQualify = new DateTime(2026, 12, 5, 11, 0, 0, 0, DateTimeKind.Utc),
-                            Recordista = "Max Verstappen",
-                            Sprint = false,
-                            TempoRecord = "1:26.103",
-                            Voltas = 58
+                            Sprint = false
                         });
                 });
 

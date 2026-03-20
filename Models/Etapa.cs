@@ -54,6 +54,34 @@ public class Etapa
     // O PontuacaoService marca como true ao processar um resultado.
     public bool Encerrada { get; set; } = false;
 
+    // Dados do circuito — editáveis diretamente no banco
+    [MaxLength(50)]
+    public string CircuitoTipo { get; set; } = "";        // Ex: "Circuito permanente"
+
+    [MaxLength(20)]
+    public string CircuitoComprimento { get; set; } = "";  // Ex: "5.451 km"
+
+    public int Voltas { get; set; }                        // Número de voltas (Sprint ou GP)
+
+    [MaxLength(20)]
+    public string Distancia { get; set; } = "";            // Ex: "305.1 km"
+
+    [MaxLength(50)]
+    public string Recordista { get; set; } = "";           // Ex: "Charles Leclerc"
+
+    [MaxLength(20)]
+    public string TempoRecord { get; set; } = "";          // Ex: "1:19.813"
+
+    public int AnoRecord { get; set; }                     // Ex: 2022
+
+    // true = e-mail de lembrete (quarta-feira) já foi enviado para esta etapa.
+    // Evita envios duplicados pelo LembreteBackgroundService.
+    public bool LembreteEnviado { get; set; } = false;
+
+    // true = e-mail de lembrete urgente (30 min antes do qualify) já foi enviado.
+    // Segundo aviso, apenas para quem ainda não fez o palpite.
+    public bool LembreteUrgenteEnviado { get; set; } = false;
+
     // Todos os palpites enviados para esta etapa (propriedade de navegação)
     public ICollection<Palpite> Palpites { get; set; } = [];
 
