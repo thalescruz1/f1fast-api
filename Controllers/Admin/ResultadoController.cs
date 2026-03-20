@@ -23,7 +23,7 @@ using F1Fast.API.Services;
 namespace F1Fast.API.Controllers.Admin;
 
 [ApiController, Route("api/admin/resultado"), Authorize(Roles = "Admin")]
-public class ResultadoController(AppDbContext db, PontuacaoService pontuacao) : ControllerBase
+public class ResultadoController(AppDbContext db, PontuacaoService pontuacao) : ApiControllerBase
 {
     // POST /api/admin/resultado → lança o resultado oficial de uma corrida
     // Após salvar o resultado, calcula automaticamente os pontos de todos os participantes.
@@ -32,10 +32,10 @@ public class ResultadoController(AppDbContext db, PontuacaoService pontuacao) : 
     {
         // Verifica se a etapa existe
         var etapa = await db.Etapas.FindAsync(req.EtapaId);
-        if (etapa is null) return NotFound("Etapa não encontrada.");
+        if (etapa is null) return Erro404("Etapa não encontrada.");
 
         // Impede relançar resultado de etapa já encerrada
-        if (etapa.Encerrada) return BadRequest("Esta etapa já foi encerrada.");
+        if (etapa.Encerrada) return Erro400("Esta etapa já foi encerrada.");
 
         // Verifica se já existe um resultado para esta etapa
         var resultado = await db.Resultados.FirstOrDefaultAsync(r => r.EtapaId == req.EtapaId);
@@ -110,10 +110,10 @@ public class ResultadoController(AppDbContext db, PontuacaoService pontuacao) : 
     {
         // Valida que só aceita "Admin" ou "User" como roles válidas
         if (novaRole is not ("Admin" or "User"))
-            return BadRequest("Role inválida.");
+            return Erro400("Role inválida. Use 'Admin' ou 'User'.");
 
         var user = await db.Usuarios.FindAsync(id);
-        if (user is null) return NotFound();
+        if (user is null) return Erro404("Usuário não encontrado.");
 
         user.Role = novaRole;
         await db.SaveChangesAsync();

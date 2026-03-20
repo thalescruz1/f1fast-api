@@ -18,7 +18,7 @@ namespace F1Fast.API.Controllers;
 
 // PontuacaoService pontuacao = injeção de dependência do serviço de pontuação
 [ApiController, Route("api/ranking")]
-public class RankingController(PontuacaoService pontuacao, AppDbContext db) : ControllerBase
+public class RankingController(PontuacaoService pontuacao, AppDbContext db) : ApiControllerBase
 {
     // GET /api/ranking → retorna a classificação geral de todos os participantes
     // "=>" é uma "expression body" — forma compacta de escrever um método de uma linha
@@ -34,7 +34,7 @@ public class RankingController(PontuacaoService pontuacao, AppDbContext db) : Co
         var usuario = await db.Usuarios
             .FirstOrDefaultAsync(u => u.Login == login);
 
-        if (usuario is null) return NotFound("Participante não encontrado.");
+        if (usuario is null) return Erro404("Participante não encontrado.");
 
         var historico = await db.Pontuacoes
             .Include(p => p.Etapa)

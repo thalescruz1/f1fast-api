@@ -16,7 +16,7 @@ using F1Fast.API.DTOs;
 namespace F1Fast.API.Controllers;
 
 [ApiController, Route("api/pilotos")]
-public class PilotoController(AppDbContext db) : ControllerBase
+public class PilotoController(AppDbContext db) : ApiControllerBase
 {
     // GET /api/pilotos → lista todos os pilotos ativos com dados da equipe
     [HttpGet]

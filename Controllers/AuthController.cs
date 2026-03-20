@@ -26,7 +26,7 @@ namespace F1Fast.API.Controllers;
 // O .NET cria e injeta o AuthService automaticamente.
 // Não precisamos escrever "new AuthService()" — o framework gerencia o ciclo de vida.
 [ApiController, Route("api/auth")]
-public class AuthController(AuthService auth) : ControllerBase
+public class AuthController(AuthService auth) : ApiControllerBase
 {
     // [HttpPost("login")] = responde a requisições POST na URL /api/auth/login
     // LoginRequest req = o .NET deserializa o JSON do body automaticamente
@@ -38,7 +38,7 @@ public class AuthController(AuthService auth) : ControllerBase
         var result = await auth.LoginAsync(req);
 
         // Operador ternário: se result for null → 401 Unauthorized, senão → 200 OK com o token
-        return result is null ? Unauthorized("Login ou senha inválidos.") : Ok(result);
+        return result is null ? Erro401("Login ou senha inválidos.") : Ok(result);
     }
 
     // POST /api/auth/register → criar uma nova conta
@@ -50,7 +50,7 @@ public class AuthController(AuthService auth) : ControllerBase
 
         // Se ok=true → 200 OK com mensagem de sucesso
         // Se ok=false → 400 BadRequest com a mensagem de erro (ex: "Login já em uso")
-        return ok ? Ok("Cadastro realizado com sucesso.") : BadRequest(erro);
+        return ok ? Ok("Cadastro realizado com sucesso.") : Erro400(erro);
     }
 
     // POST /api/auth/esqueci-senha → envia e-mail de recuperação de senha
@@ -69,6 +69,6 @@ public class AuthController(AuthService auth) : ControllerBase
     public async Task<IActionResult> RedefinirSenha(RedefinirSenhaRequest req)
     {
         var (ok, erro) = await auth.RedefinirSenhaAsync(req.Token, req.NovaSenha);
-        return ok ? Ok("Senha redefinida com sucesso.") : BadRequest(erro);
+        return ok ? Ok("Senha redefinida com sucesso.") : Erro400(erro);
     }
 }

@@ -18,7 +18,7 @@ namespace F1Fast.API.Controllers;
 // AppDbContext db = contexto do banco de dados (injetado pelo .NET)
 // Usamos ele para fazer queries no banco sem escrever SQL diretamente.
 [ApiController, Route("api/etapas")]
-public class EtapaController(AppDbContext db) : ControllerBase
+public class EtapaController(AppDbContext db) : ApiControllerBase
 {
     // GET /api/etapas → retorna todas as etapas ordenadas pelo número
     [HttpGet]
@@ -69,6 +69,6 @@ public class EtapaController(AppDbContext db) : ControllerBase
 
         // Se não houver próxima etapa → 404 Not Found
         // Se houver → 200 OK com os dados da etapa
-        return proxima is null ? NotFound() : Ok(proxima);
+        return proxima is null ? Erro404("Nenhuma etapa aberta no momento.") : Ok(proxima);
     }
 }

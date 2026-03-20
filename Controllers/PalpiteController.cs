@@ -22,7 +22,7 @@ using F1Fast.API.Models;
 namespace F1Fast.API.Controllers;
 
 [ApiController, Route("api/palpites"), Authorize]
-public class PalpiteController(AppDbContext db) : ControllerBase
+public class PalpiteController(AppDbContext db) : ApiControllerBase
 {
     // Propriedade que lê o ID do usuário logado a partir do JWT.
     // ClaimTypes.NameIdentifier = campo do token que guarda o ID do usuário.
@@ -35,11 +35,11 @@ public class PalpiteController(AppDbContext db) : ControllerBase
     {
         // Verifica se a etapa existe no banco
         var etapa = await db.Etapas.FindAsync(req.EtapaId);
-        if (etapa is null) return NotFound("Etapa não encontrada.");
+        if (etapa is null) return Erro404("Etapa não encontrada.");
 
         // Verifica se o prazo não expirou
         if (DateTime.UtcNow > etapa.PrazoQualify)
-            return BadRequest("Prazo encerrado para esta etapa.");
+            return Erro400("Prazo encerrado para esta etapa.");
 
         // Agrupa os IDs das 10 posições para verificar duplicatas
         int[] posicoes = [
@@ -49,7 +49,7 @@ public class PalpiteController(AppDbContext db) : ControllerBase
 
         // .Distinct() remove duplicatas; se Count() != 10, há piloto repetido
         if (posicoes.Distinct().Count() != 10)
-            return BadRequest("O mesmo piloto não pode aparecer em mais de uma posição.");
+            return Erro400("O mesmo piloto não pode aparecer em mais de uma posição.");
 
         // Verifica se o usuário já tem um palpite para esta etapa
         var existente = await db.Palpites
@@ -108,7 +108,7 @@ public class PalpiteController(AppDbContext db) : ControllerBase
         var palpite = await db.Palpites
             .FirstOrDefaultAsync(p => p.UsuarioId == UserId && p.EtapaId == etapaId);
 
-        return palpite is null ? NotFound() : Ok(palpite);
+        return palpite is null ? Erro404("Palpite não encontrado para esta etapa.") : Ok(palpite);
     }
 
     // GET /api/palpites/{etapaId}/resultado → resultado oficial público (após prazo)
@@ -117,13 +117,13 @@ public class PalpiteController(AppDbContext db) : ControllerBase
     public async Task<IActionResult> GetResultado(int etapaId)
     {
         var etapa = await db.Etapas.FindAsync(etapaId);
-        if (etapa is null) return NotFound();
+        if (etapa is null) return Erro404("Etapa não encontrada.");
 
         if (DateTime.UtcNow < etapa.PrazoQualify)
-            return BadRequest("Resultado não disponível antes do prazo.");
+            return Erro400("Resultado não disponível antes do prazo.");
 
         var resultado = await db.Resultados.FirstOrDefaultAsync(r => r.EtapaId == etapaId);
-        if (resultado is null) return NotFound("Resultado ainda não cadastrado.");
+        if (resultado is null) return Erro404("Resultado ainda não cadastrado.");
 
         var pilotos = await db.Pilotos
             .ToDictionaryAsync(p => p.Id, p => $"{p.Numero} — {p.Nome}");
@@ -157,11 +157,11 @@ public class PalpiteController(AppDbContext db) : ControllerBase
     public async Task<IActionResult> GetPublico(int etapaId)
     {
         var etapa = await db.Etapas.FindAsync(etapaId);
-        if (etapa is null) return NotFound();
+        if (etapa is null) return Erro404("Etapa não encontrada.");
 
         // Bloqueia acesso antes do prazo (os palpites ficam ocultos até o qualifying)
         if (DateTime.UtcNow < etapa.PrazoQualify)
-            return BadRequest("Os palpites ficam visíveis após o prazo.");
+            return Erro400("Os palpites ficam visíveis após o prazo.");
 
         // Cria um dicionário id→nome para resolver os IDs em nomes de pilotos
         // Ex: { 17: "44 — Lewis Hamilton", 9: "16 — Charles Leclerc" }

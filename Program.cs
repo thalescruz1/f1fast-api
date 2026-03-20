@@ -21,6 +21,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using F1Fast.API.Background;
 using F1Fast.API.Data;
+using F1Fast.API.Middleware;
 using F1Fast.API.Services;
 
 // Cria o "builder" — objeto que configura e constrói a aplicação
@@ -145,6 +146,7 @@ using (var scope = app.Services.CreateScope())
 // A ORDEM importa! Cada middleware processa a requisição em sequência.
 // UseCors → UseAuthentication → UseAuthorization → MapControllers
 
+app.UseMiddleware<ExceptionMiddleware>(); // captura exceções não tratadas → ApiError
 app.UseCors("Angular");       // libera as origens permitidas
 app.UseAuthentication();      // lê e valida o token JWT
 app.UseAuthorization();       // verifica [Authorize] / roles

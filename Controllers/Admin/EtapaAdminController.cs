@@ -26,7 +26,7 @@ namespace F1Fast.API.Controllers.Admin;
 public record AtualizarPrazoRequest(DateTime NovoPrazo);
 
 [ApiController, Route("api/admin/etapas"), Authorize(Roles = "Admin")]
-public class EtapaAdminController(AppDbContext db) : ControllerBase
+public class EtapaAdminController(AppDbContext db) : ApiControllerBase
 {
     // GET /api/admin/etapas → retorna todas as 30 etapas com seus prazos atuais
     // Usado pela tela "Gerenciar Prazos" do painel admin para listar as etapas.
@@ -63,7 +63,7 @@ public class EtapaAdminController(AppDbContext db) : ControllerBase
     public async Task<IActionResult> AtualizarPrazo(int id, [FromBody] AtualizarPrazoRequest req)
     {
         var etapa = await db.Etapas.FindAsync(id);
-        if (etapa is null) return NotFound("Etapa não encontrada.");
+        if (etapa is null) return Erro404("Etapa não encontrada.");
 
         // Salva o novo prazo no banco. A partir deste momento, o PalpiteController
         // usará este novo valor para liberar ou bloquear apostas.
