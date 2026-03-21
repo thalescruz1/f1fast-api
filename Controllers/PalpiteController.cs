@@ -37,6 +37,10 @@ public class PalpiteController(AppDbContext db) : ApiControllerBase
         var etapa = await db.Etapas.FindAsync(req.EtapaId);
         if (etapa is null) return Erro404("Etapa não encontrada.");
 
+        // Verifica se a etapa foi cancelada
+        if (etapa.Cancelada)
+            return Erro400("Esta etapa foi cancelada.");
+
         // Verifica se o prazo não expirou
         if (DateTime.UtcNow > etapa.PrazoQualify)
             return Erro400("Prazo encerrado para esta etapa.");

@@ -84,6 +84,10 @@ public class Etapa
     // SVG path data do traçado do circuito (renderizado no frontend)
     public string CircuitoSvg { get; set; } = "";
 
+    // true = etapa cancelada (não aceita palpites, não envia lembretes,
+    // não aparece como próxima). Exibida como "Cancelada" no frontend.
+    public bool Cancelada { get; set; } = false;
+
     // true = e-mail de lembrete (quarta-feira) já foi enviado para esta etapa.
     // Evita envios duplicados pelo LembreteBackgroundService.
     public bool LembreteEnviado { get; set; } = false;

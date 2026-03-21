@@ -35,6 +35,7 @@ public class NotificacaoService(AppDbContext db, IConfiguration config, ILogger<
         // e cuja DataCorrida é futura (a corrida ainda não aconteceu)
         var proximaEtapa = await db.Etapas
             .Where(e => !e.Encerrada
+                     && !e.Cancelada
                      && !e.LembreteEnviado
                      && e.DataCorrida != null
                      && e.DataCorrida > agora)
@@ -103,6 +104,7 @@ public class NotificacaoService(AppDbContext db, IConfiguration config, ILogger<
         // Busca etapa cujo PrazoQualify está nos próximos 45 minutos e ainda não teve lembrete urgente
         var proximaEtapa = await db.Etapas
             .Where(e => !e.Encerrada
+                     && !e.Cancelada
                      && !e.LembreteUrgenteEnviado
                      && e.PrazoQualify > agora
                      && e.PrazoQualify <= limite)

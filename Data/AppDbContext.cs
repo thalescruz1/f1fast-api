@@ -154,7 +154,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             // Id=5: GP do Bahrein — Regular GP
             // TL1 = 2026-04-09 12:30, TL2 = 2026-04-09 16:00, TL3 = 2026-04-10 12:30, Classificacao = 2026-04-10 16:00
             new Etapa {
-                Id=5, Numero=5, Nome="GP do Bahrein", Circuito="Sakhir", Cidade="Sakhir", Pais="🇧🇭",
+                Id=5, Numero=5, Nome="GP do Bahrein", Circuito="Sakhir", Cidade="Sakhir", Pais="🇧🇭", Cancelada=true,
                 Sprint=false, PrazoQualify=new DateTime(2026,4,11,12,0,0,DateTimeKind.Utc),
                 DataCorrida=new DateTime(2026,4,11,12,0,0,DateTimeKind.Utc),
                 CircuitoTipo="Circuito permanente (iluminado)", CircuitoComprimento="5.412 km", Voltas=57, Distancia="308.2 km",
@@ -168,7 +168,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             // Id=6: GP da Arábia Saudita — Regular GP
             // TL1 = 2026-04-16 14:30, TL2 = 2026-04-16 18:00, TL3 = 2026-04-17 14:30, Classificacao = 2026-04-17 18:00
             new Etapa {
-                Id=6, Numero=6, Nome="GP da Arábia Saudita", Circuito="Jeddah", Cidade="Jeddah", Pais="🇸🇦",
+                Id=6, Numero=6, Nome="GP da Arábia Saudita", Circuito="Jeddah", Cidade="Jeddah", Pais="🇸🇦", Cancelada=true,
                 Sprint=false, PrazoQualify=new DateTime(2026,4,18,14,0,0,DateTimeKind.Utc),
                 DataCorrida=new DateTime(2026,4,18,14,0,0,DateTimeKind.Utc),
                 CircuitoTipo="Circuito de rua", CircuitoComprimento="6.174 km", Voltas=50, Distancia="308.5 km",

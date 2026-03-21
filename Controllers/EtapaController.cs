@@ -39,7 +39,8 @@ public class EtapaController(AppDbContext db) : ApiControllerBase
                 agora > e.PrazoQualify,
                 e.CircuitoTipo, e.CircuitoComprimento, e.Voltas, e.Distancia,
                 e.Recordista, e.TempoRecord, e.AnoRecord,
-                e.TreinoLivre1, e.TreinoLivre2, e.TreinoLivre3, e.Classificacao, e.CircuitoSvg))
+                e.TreinoLivre1, e.TreinoLivre2, e.TreinoLivre3, e.Classificacao, e.CircuitoSvg,
+                e.Cancelada))
             .ToListAsync();
 
         return Ok(etapas); // retorna 200 OK com a lista JSON
@@ -53,10 +54,11 @@ public class EtapaController(AppDbContext db) : ApiControllerBase
 
         // Filtramos etapas que:
         //   - Não foram encerradas (!e.Encerrada)
+        //   - Não foram canceladas (!e.Cancelada)
         //   - Ainda estão no prazo (PrazoQualify > agora)
         // Pegamos a primeira pelo prazo mais próximo (OrderBy PrazoQualify)
         var proxima = await db.Etapas
-            .Where(e => !e.Encerrada && e.PrazoQualify > agora)
+            .Where(e => !e.Encerrada && !e.Cancelada && e.PrazoQualify > agora)
             .OrderBy(e => e.PrazoQualify)
             .Select(e => new EtapaDto(
                 e.Id, e.Numero, e.Nome, e.Circuito, e.Cidade, e.Pais,
@@ -64,7 +66,8 @@ public class EtapaController(AppDbContext db) : ApiControllerBase
                 e.Encerrada, false,
                 e.CircuitoTipo, e.CircuitoComprimento, e.Voltas, e.Distancia,
                 e.Recordista, e.TempoRecord, e.AnoRecord,
-                e.TreinoLivre1, e.TreinoLivre2, e.TreinoLivre3, e.Classificacao, e.CircuitoSvg))
+                e.TreinoLivre1, e.TreinoLivre2, e.TreinoLivre3, e.Classificacao, e.CircuitoSvg,
+                e.Cancelada))
             .FirstOrDefaultAsync(); // null se não houver nenhuma etapa aberta
 
         // Se não houver próxima etapa → 404 Not Found

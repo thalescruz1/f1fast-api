@@ -49,7 +49,8 @@ public record EtapaDto(
     DateTime? TreinoLivre2,
     DateTime? TreinoLivre3,
     DateTime? Classificacao,
-    string    CircuitoSvg
+    string    CircuitoSvg,
+    bool      Cancelada = false
 );
 
 /// <summary>

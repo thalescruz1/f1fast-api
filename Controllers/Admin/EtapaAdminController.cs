@@ -47,6 +47,7 @@ public class EtapaAdminController(AppDbContext db) : ApiControllerBase
                 e.PrazoQualify,
                 e.DataCorrida,
                 e.Encerrada,
+                e.Cancelada,
                 // PrazoExpirado = calculado na hora, não salvo no banco
                 PrazoExpirado = agora > e.PrazoQualify
             })
@@ -71,5 +72,19 @@ public class EtapaAdminController(AppDbContext db) : ApiControllerBase
         await db.SaveChangesAsync();
 
         return Ok($"Prazo da etapa '{etapa.Nome}' atualizado para {req.NovoPrazo:dd/MM/yyyy HH:mm} UTC.");
+    }
+
+    // PATCH /api/admin/etapas/{id}/cancelar → alterna o status de cancelamento
+    [HttpPatch("{id:int}/cancelar")]
+    public async Task<IActionResult> ToggleCancelada(int id)
+    {
+        var etapa = await db.Etapas.FindAsync(id);
+        if (etapa is null) return Erro404("Etapa não encontrada.");
+
+        etapa.Cancelada = !etapa.Cancelada;
+        await db.SaveChangesAsync();
+
+        var status = etapa.Cancelada ? "cancelada" : "reativada";
+        return Ok(new { mensagem = $"Etapa '{etapa.Nome}' {status}.", cancelada = etapa.Cancelada });
     }
 }
