@@ -26,7 +26,7 @@ public record RegisterRequest(
     [Required, MaxLength(100)] string Nome,        // Primeiro nome
     [Required, MaxLength(100)] string Sobrenome,   // Sobrenome
     [Required, MaxLength(14)]  string Cpf,         // CPF (formato livre)
-    [Required, MaxLength(8)]   string Senha,       // Senha em texto puro (será criptografada)
+    [Required, MinLength(8), MaxLength(100)] string Senha, // Senha (mín. 8 chars, maiúscula, número, especial)
     [Required, MaxLength(100)] string Localizacao, // Ex: "São Paulo, SP"
     [Required, EmailAddress]   string Email        // [EmailAddress] valida formato de e-mail
 );
@@ -60,5 +60,5 @@ public record EsqueciSenhaRequest([Required, EmailAddress] string Email);
 /// </summary>
 public record RedefinirSenhaRequest(
     [Required] string Token,                               // Token único do e-mail de recuperação
-    [Required, MinLength(6), MaxLength(8)] string NovaSenha // Nova senha (entre 6 e 8 caracteres)
+    [Required, MinLength(8), MaxLength(100)] string NovaSenha // Nova senha (mín. 8 chars, maiúscula, número, especial)
 );

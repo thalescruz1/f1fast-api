@@ -15,6 +15,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Net.Mail;
 using System.Security.Claims;
 using System.Text;
+using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using F1Fast.API.Data;
@@ -33,8 +34,11 @@ public class AuthService(AppDbContext db, IConfiguration config, ILogger<AuthSer
     /// </summary>
     public async Task<AuthResponse?> LoginAsync(LoginRequest req)
     {
-        // Busca o usuário pelo login no banco
-        var user = await db.Usuarios.FirstOrDefaultAsync(u => u.Login == req.Login);
+        // Busca o usuário pelo login OU pelo e-mail (permite login com ambos)
+        var identificador = req.Login.Trim();
+        var user = identificador.Contains('@')
+            ? await db.Usuarios.FirstOrDefaultAsync(u => u.Email == identificador)
+            : await db.Usuarios.FirstOrDefaultAsync(u => u.Login == identificador);
 
         // BCrypt.Verify compara a senha digitada com o hash salvo no banco.
         // Nunca comparamos senhas em texto puro — sempre usamos o hash!
@@ -51,6 +55,15 @@ public class AuthService(AppDbContext db, IConfiguration config, ILogger<AuthSer
     /// </summary>
     public async Task<(bool Ok, string Erro)> RegisterAsync(RegisterRequest req)
     {
+        // Login não pode conter espaços
+        if (req.Login.Contains(' '))
+            return (false, "O login não pode conter espaços.");
+
+        // Validação de complexidade da senha
+        var erroSenha = ValidarSenha(req.Senha);
+        if (erroSenha is not null)
+            return (false, erroSenha);
+
         // AnyAsync = retorna true se existir PELO MENOS UM registro com essa condição
         if (await db.Usuarios.AnyAsync(u => u.Login == req.Login))
             return (false, "Login já em uso.");
@@ -118,6 +131,11 @@ public class AuthService(AppDbContext db, IConfiguration config, ILogger<AuthSer
     public async Task<(bool Ok, string Erro)> RedefinirSenhaAsync(string token, string novaSenha)
     {
         // Busca o usuário pelo token, garantindo que não expirou
+        // Validação de complexidade da senha
+        var erroSenha = ValidarSenha(novaSenha);
+        if (erroSenha is not null)
+            return (false, erroSenha);
+
         var user = await db.Usuarios.FirstOrDefaultAsync(u =>
             u.ResetToken == token && u.ResetTokenExpiry > DateTime.UtcNow);
 
@@ -131,6 +149,23 @@ public class AuthService(AppDbContext db, IConfiguration config, ILogger<AuthSer
         await db.SaveChangesAsync();
 
         return (true, "");
+    }
+
+    /// <summary>
+    /// Valida complexidade da senha: mín. 8 chars, maiúscula, número e caractere especial.
+    /// Retorna null se válida, ou a mensagem de erro.
+    /// </summary>
+    private static string? ValidarSenha(string senha)
+    {
+        if (senha.Length < 8)
+            return "A senha deve ter no mínimo 8 caracteres.";
+        if (!Regex.IsMatch(senha, @"[A-Z]"))
+            return "A senha deve conter pelo menos uma letra maiúscula.";
+        if (!Regex.IsMatch(senha, @"[0-9]"))
+            return "A senha deve conter pelo menos um número.";
+        if (!Regex.IsMatch(senha, @"[!@#$%&*?.\-_]"))
+            return "A senha deve conter pelo menos um caractere especial (!@#$%&*?.-_).";
+        return null;
     }
 
     /// <summary>
