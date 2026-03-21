@@ -104,13 +104,7 @@ builder.Services.AddCors(opt =>
 // ============================================================
 // AddControllers = habilita o sistema de controllers (MVC API)
 // Swagger = interface web para testar a API em /swagger
-builder.Services.AddControllers()
-    .AddJsonOptions(opt =>
-    {
-        // Garante que todas as datas sejam serializadas com "Z" (UTC)
-        // para que o frontend interprete corretamente o timezone
-        opt.JsonSerializerOptions.Converters.Add(new F1Fast.API.Converters.UtcDateTimeConverter());
-    });
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
