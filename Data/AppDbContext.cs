@@ -99,7 +99,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             // Id=1: GP da Austrália — Regular GP
             // TL1 = 2026-03-05 22:30, TL2 = 2026-03-06 02:00, TL3 = 2026-03-06 22:30, Classificacao = 2026-03-07 02:00
             new Etapa {
-                Id=1, Numero=1, Nome="GP da Austrália", Circuito="Albert Park", Cidade="Melbourne", Pais="🇦🇺",
+                Id=1, Numero=1, Nome="GP da Austrália", Circuito="Albert Park", Cidade="Melbourne", Pais="au",
                 Sprint=false, PrazoQualify=new DateTime(2026,3,6,23,0,0,DateTimeKind.Utc),
                 DataCorrida=new DateTime(2026,3,7,22,0,0,DateTimeKind.Utc),
                 CircuitoTipo="Circuito semi-permanente", CircuitoComprimento="5.278 km", Voltas=58, Distancia="306.1 km",
@@ -113,7 +113,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             // Id=2: Sprint da China — Sprint
             // TL1 = 2026-03-12 02:00, TL2 = null, TL3 = null, Classificacao = 2026-03-12 05:30
             new Etapa {
-                Id=2, Numero=2, Nome="Sprint da China", Circuito="Changai", Cidade="Changai", Pais="🇨🇳",
+                Id=2, Numero=2, Nome="Sprint da China", Circuito="Changai", Cidade="Changai", Pais="cn",
                 Sprint=true, PrazoQualify=new DateTime(2026,3,13,1,30,0,DateTimeKind.Utc),
                 DataCorrida=new DateTime(2026,3,13,1,30,0,DateTimeKind.Utc),
                 CircuitoTipo="Circuito permanente", CircuitoComprimento="5.451 km", Voltas=19, Distancia="103.6 km",
@@ -127,7 +127,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             // Id=3: GP da China — Sprint weekend GP (after Sprint Id=2)
             // TL1 = null, TL2 = null, TL3 = null, Classificacao = 2026-03-13 05:30
             new Etapa {
-                Id=3, Numero=3, Nome="GP da China", Circuito="Changai", Cidade="Changai", Pais="🇨🇳",
+                Id=3, Numero=3, Nome="GP da China", Circuito="Changai", Cidade="Changai", Pais="cn",
                 Sprint=false, PrazoQualify=new DateTime(2026,3,14,1,0,0,DateTimeKind.Utc),
                 DataCorrida=new DateTime(2026,3,14,1,0,0,DateTimeKind.Utc),
                 CircuitoTipo="Circuito permanente", CircuitoComprimento="5.451 km", Voltas=56, Distancia="305.1 km",
@@ -141,7 +141,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             // Id=4: GP do Japão — Regular GP
             // TL1 = 2026-03-26 00:30, TL2 = 2026-03-26 04:00, TL3 = 2026-03-27 00:30, Classificacao = 2026-03-27 04:00
             new Etapa {
-                Id=4, Numero=4, Nome="GP do Japão", Circuito="Suzuka", Cidade="Suzuka", Pais="🇯🇵",
+                Id=4, Numero=4, Nome="GP do Japão", Circuito="Suzuka", Cidade="Suzuka", Pais="jp",
                 Sprint=false, PrazoQualify=new DateTime(2026,3,28,0,0,0,DateTimeKind.Utc),
                 DataCorrida=new DateTime(2026,3,28,0,0,0,DateTimeKind.Utc),
                 CircuitoTipo="Circuito permanente", CircuitoComprimento="5.807 km", Voltas=53, Distancia="307.5 km",
@@ -155,7 +155,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             // Id=5: GP do Bahrein — Regular GP
             // TL1 = 2026-04-09 09:30, TL2 = 2026-04-09 13:00, TL3 = 2026-04-10 09:30, Classificacao = 2026-04-10 13:00
             new Etapa {
-                Id=5, Numero=5, Nome="GP do Bahrein", Circuito="Sakhir", Cidade="Sakhir", Pais="🇧🇭", Cancelada=true,
+                Id=5, Numero=5, Nome="GP do Bahrein", Circuito="Sakhir", Cidade="Sakhir", Pais="bh", Cancelada=true,
                 Sprint=false, PrazoQualify=new DateTime(2026,4,11,9,0,0,DateTimeKind.Utc),
                 DataCorrida=new DateTime(2026,4,11,9,0,0,DateTimeKind.Utc),
                 CircuitoTipo="Circuito permanente (iluminado)", CircuitoComprimento="5.412 km", Voltas=57, Distancia="308.2 km",
@@ -169,7 +169,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             // Id=6: GP da Arábia Saudita — Regular GP
             // TL1 = 2026-04-16 11:30, TL2 = 2026-04-16 15:00, TL3 = 2026-04-17 11:30, Classificacao = 2026-04-17 15:00
             new Etapa {
-                Id=6, Numero=6, Nome="GP da Arábia Saudita", Circuito="Jeddah", Cidade="Jeddah", Pais="🇸🇦", Cancelada=true,
+                Id=6, Numero=6, Nome="GP da Arábia Saudita", Circuito="Jeddah", Cidade="Jeddah", Pais="sa", Cancelada=true,
                 Sprint=false, PrazoQualify=new DateTime(2026,4,18,11,0,0,DateTimeKind.Utc),
                 DataCorrida=new DateTime(2026,4,18,11,0,0,DateTimeKind.Utc),
                 CircuitoTipo="Circuito de rua", CircuitoComprimento="6.174 km", Voltas=50, Distancia="308.5 km",
@@ -183,7 +183,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             // Id=7: Sprint de Miami — Sprint
             // TL1 = 2026-04-30 15:00, TL2 = null, TL3 = null, Classificacao = 2026-04-30 18:30
             new Etapa {
-                Id=7, Numero=7, Nome="Sprint de Miami", Circuito="Miami", Cidade="Miami", Pais="🇺🇸",
+                Id=7, Numero=7, Nome="Sprint de Miami", Circuito="Miami", Cidade="Miami", Pais="us",
                 Sprint=true, PrazoQualify=new DateTime(2026,5,1,14,30,0,DateTimeKind.Utc),
                 DataCorrida=new DateTime(2026,5,1,14,30,0,DateTimeKind.Utc),
                 CircuitoTipo="Circuito semi-permanente", CircuitoComprimento="5.412 km", Voltas=18, Distancia="97.4 km",
@@ -197,7 +197,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             // Id=8: GP de Miami — Sprint weekend GP (after Sprint Id=7)
             // TL1 = null, TL2 = null, TL3 = null, Classificacao = 2026-05-01 18:30
             new Etapa {
-                Id=8, Numero=8, Nome="GP de Miami", Circuito="Miami", Cidade="Miami", Pais="🇺🇸",
+                Id=8, Numero=8, Nome="GP de Miami", Circuito="Miami", Cidade="Miami", Pais="us",
                 Sprint=false, PrazoQualify=new DateTime(2026,5,2,14,0,0,DateTimeKind.Utc),
                 DataCorrida=new DateTime(2026,5,2,14,0,0,DateTimeKind.Utc),
                 CircuitoTipo="Circuito semi-permanente", CircuitoComprimento="5.412 km", Voltas=57, Distancia="308.3 km",
@@ -211,7 +211,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             // Id=9: Sprint do Canadá — Sprint
             // TL1 = 2026-05-21 15:00, TL2 = null, TL3 = null, Classificacao = 2026-05-21 18:30
             new Etapa {
-                Id=9, Numero=9, Nome="Sprint do Canadá", Circuito="Montreal", Cidade="Montreal", Pais="🇨🇦",
+                Id=9, Numero=9, Nome="Sprint do Canadá", Circuito="Montreal", Cidade="Montreal", Pais="ca",
                 Sprint=true, PrazoQualify=new DateTime(2026,5,22,14,30,0,DateTimeKind.Utc),
                 DataCorrida=new DateTime(2026,5,22,14,30,0,DateTimeKind.Utc),
                 CircuitoTipo="Circuito semi-permanente", CircuitoComprimento="4.361 km", Voltas=23, Distancia="100.3 km",
@@ -225,7 +225,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             // Id=10: GP do Canadá — Sprint weekend GP (after Sprint Id=9)
             // TL1 = null, TL2 = null, TL3 = null, Classificacao = 2026-05-22 18:30
             new Etapa {
-                Id=10, Numero=10, Nome="GP do Canadá", Circuito="Montreal", Cidade="Montreal", Pais="🇨🇦",
+                Id=10, Numero=10, Nome="GP do Canadá", Circuito="Montreal", Cidade="Montreal", Pais="ca",
                 Sprint=false, PrazoQualify=new DateTime(2026,5,23,14,0,0,DateTimeKind.Utc),
                 DataCorrida=new DateTime(2026,5,23,14,0,0,DateTimeKind.Utc),
                 CircuitoTipo="Circuito semi-permanente", CircuitoComprimento="4.361 km", Voltas=70, Distancia="305.3 km",
@@ -239,7 +239,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             // Id=11: GP de Mônaco — Regular GP
             // TL1 = 2026-06-04 08:30, TL2 = 2026-06-04 12:00, TL3 = 2026-06-05 08:30, Classificacao = 2026-06-05 12:00
             new Etapa {
-                Id=11, Numero=11, Nome="GP de Mônaco", Circuito="Monte Carlo", Cidade="Monte Carlo", Pais="🇲🇨",
+                Id=11, Numero=11, Nome="GP de Mônaco", Circuito="Monte Carlo", Cidade="Monte Carlo", Pais="mc",
                 Sprint=false, PrazoQualify=new DateTime(2026,6,6,8,0,0,DateTimeKind.Utc),
                 DataCorrida=new DateTime(2026,6,6,8,0,0,DateTimeKind.Utc),
                 CircuitoTipo="Circuito de rua", CircuitoComprimento="3.337 km", Voltas=78, Distancia="260.3 km",
@@ -253,7 +253,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             // Id=12: GP de Barcelona — Regular GP
             // TL1 = 2026-06-11 08:30, TL2 = 2026-06-11 12:00, TL3 = 2026-06-12 08:30, Classificacao = 2026-06-12 12:00
             new Etapa {
-                Id=12, Numero=12, Nome="GP de Barcelona", Circuito="Catalunia", Cidade="Barcelona", Pais="🇪🇸",
+                Id=12, Numero=12, Nome="GP de Barcelona", Circuito="Catalunia", Cidade="Barcelona", Pais="es",
                 Sprint=false, PrazoQualify=new DateTime(2026,6,13,8,0,0,DateTimeKind.Utc),
                 DataCorrida=new DateTime(2026,6,13,8,0,0,DateTimeKind.Utc),
                 CircuitoTipo="Circuito permanente", CircuitoComprimento="4.657 km", Voltas=66, Distancia="307.3 km",
@@ -267,7 +267,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             // Id=13: GP da Áustria — Regular GP
             // TL1 = 2026-06-25 08:30, TL2 = 2026-06-25 12:00, TL3 = 2026-06-26 08:30, Classificacao = 2026-06-26 12:00
             new Etapa {
-                Id=13, Numero=13, Nome="GP da Áustria", Circuito="Red Bull Ring", Cidade="Spielberg", Pais="🇦🇹",
+                Id=13, Numero=13, Nome="GP da Áustria", Circuito="Red Bull Ring", Cidade="Spielberg", Pais="at",
                 Sprint=false, PrazoQualify=new DateTime(2026,6,27,8,0,0,DateTimeKind.Utc),
                 DataCorrida=new DateTime(2026,6,27,8,0,0,DateTimeKind.Utc),
                 CircuitoTipo="Circuito permanente", CircuitoComprimento="4.318 km", Voltas=71, Distancia="306.5 km",
@@ -281,7 +281,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             // Id=14: Sprint da Grã-Bretanha — Sprint
             // TL1 = 2026-07-02 10:00, TL2 = null, TL3 = null, Classificacao = 2026-07-02 13:30
             new Etapa {
-                Id=14, Numero=14, Nome="Sprint da Grã-Bretanha", Circuito="Silverstone", Cidade="Silverstone", Pais="🇬🇧",
+                Id=14, Numero=14, Nome="Sprint da Grã-Bretanha", Circuito="Silverstone", Cidade="Silverstone", Pais="gb",
                 Sprint=true, PrazoQualify=new DateTime(2026,7,3,9,30,0,DateTimeKind.Utc),
                 DataCorrida=new DateTime(2026,7,3,9,30,0,DateTimeKind.Utc),
                 CircuitoTipo="Circuito permanente", CircuitoComprimento="5.891 km", Voltas=17, Distancia="100.1 km",
@@ -295,7 +295,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             // Id=15: GP da Grã-Bretanha — Sprint weekend GP (after Sprint Id=14)
             // TL1 = null, TL2 = null, TL3 = null, Classificacao = 2026-07-03 13:30
             new Etapa {
-                Id=15, Numero=15, Nome="GP da Grã-Bretanha", Circuito="Silverstone", Cidade="Silverstone", Pais="🇬🇧",
+                Id=15, Numero=15, Nome="GP da Grã-Bretanha", Circuito="Silverstone", Cidade="Silverstone", Pais="gb",
                 Sprint=false, PrazoQualify=new DateTime(2026,7,4,9,0,0,DateTimeKind.Utc),
                 DataCorrida=new DateTime(2026,7,4,9,0,0,DateTimeKind.Utc),
                 CircuitoTipo="Circuito permanente", CircuitoComprimento="5.891 km", Voltas=52, Distancia="306.2 km",
@@ -309,7 +309,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             // Id=16: GP da Bélgica — Regular GP
             // TL1 = 2026-07-16 08:30, TL2 = 2026-07-16 12:00, TL3 = 2026-07-17 08:30, Classificacao = 2026-07-17 12:00
             new Etapa {
-                Id=16, Numero=16, Nome="GP da Bélgica", Circuito="Spa-Francorchamps", Cidade="Spa", Pais="🇧🇪",
+                Id=16, Numero=16, Nome="GP da Bélgica", Circuito="Spa-Francorchamps", Cidade="Spa", Pais="be",
                 Sprint=false, PrazoQualify=new DateTime(2026,7,18,8,0,0,DateTimeKind.Utc),
                 DataCorrida=new DateTime(2026,7,18,8,0,0,DateTimeKind.Utc),
                 CircuitoTipo="Circuito permanente", CircuitoComprimento="7.004 km", Voltas=44, Distancia="308.1 km",
@@ -323,7 +323,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             // Id=17: GP da Hungria — Regular GP
             // TL1 = 2026-07-23 08:30, TL2 = 2026-07-23 12:00, TL3 = 2026-07-24 08:30, Classificacao = 2026-07-24 12:00
             new Etapa {
-                Id=17, Numero=17, Nome="GP da Hungria", Circuito="Hungaroring", Cidade="Budapest", Pais="🇭🇺",
+                Id=17, Numero=17, Nome="GP da Hungria", Circuito="Hungaroring", Cidade="Budapest", Pais="hu",
                 Sprint=false, PrazoQualify=new DateTime(2026,7,25,8,0,0,DateTimeKind.Utc),
                 DataCorrida=new DateTime(2026,7,25,8,0,0,DateTimeKind.Utc),
                 CircuitoTipo="Circuito permanente", CircuitoComprimento="4.381 km", Voltas=70, Distancia="306.6 km",
@@ -337,7 +337,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             // Id=18: Sprint da Holanda — Sprint
             // TL1 = 2026-08-20 09:00, TL2 = null, TL3 = null, Classificacao = 2026-08-20 12:30
             new Etapa {
-                Id=18, Numero=18, Nome="Sprint da Holanda", Circuito="Zandvoort", Cidade="Zandvoort", Pais="🇳🇱",
+                Id=18, Numero=18, Nome="Sprint da Holanda", Circuito="Zandvoort", Cidade="Zandvoort", Pais="nl",
                 Sprint=true, PrazoQualify=new DateTime(2026,8,21,8,30,0,DateTimeKind.Utc),
                 DataCorrida=new DateTime(2026,8,21,8,30,0,DateTimeKind.Utc),
                 CircuitoTipo="Circuito permanente", CircuitoComprimento="4.259 km", Voltas=24, Distancia="102.2 km",
@@ -351,7 +351,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             // Id=19: GP da Holanda — Sprint weekend GP (after Sprint Id=18)
             // TL1 = null, TL2 = null, TL3 = null, Classificacao = 2026-08-21 12:30
             new Etapa {
-                Id=19, Numero=19, Nome="GP da Holanda", Circuito="Zandvoort", Cidade="Zandvoort", Pais="🇳🇱",
+                Id=19, Numero=19, Nome="GP da Holanda", Circuito="Zandvoort", Cidade="Zandvoort", Pais="nl",
                 Sprint=false, PrazoQualify=new DateTime(2026,8,22,8,0,0,DateTimeKind.Utc),
                 DataCorrida=new DateTime(2026,8,22,8,0,0,DateTimeKind.Utc),
                 CircuitoTipo="Circuito permanente", CircuitoComprimento="4.259 km", Voltas=72, Distancia="306.6 km",
@@ -365,7 +365,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             // Id=20: GP da Itália — Regular GP
             // TL1 = 2026-09-03 08:30, TL2 = 2026-09-03 12:00, TL3 = 2026-09-04 08:30, Classificacao = 2026-09-04 12:00
             new Etapa {
-                Id=20, Numero=20, Nome="GP da Itália", Circuito="Monza", Cidade="Monza", Pais="🇮🇹",
+                Id=20, Numero=20, Nome="GP da Itália", Circuito="Monza", Cidade="Monza", Pais="it",
                 Sprint=false, PrazoQualify=new DateTime(2026,9,5,8,0,0,DateTimeKind.Utc),
                 DataCorrida=new DateTime(2026,9,5,8,0,0,DateTimeKind.Utc),
                 CircuitoTipo="Circuito permanente (alta velocidade)", CircuitoComprimento="5.793 km", Voltas=53, Distancia="306.7 km",
@@ -379,7 +379,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             // Id=21: GP da Espanha — Regular GP
             // TL1 = 2026-09-10 08:30, TL2 = 2026-09-10 12:00, TL3 = 2026-09-11 08:30, Classificacao = 2026-09-11 12:00
             new Etapa {
-                Id=21, Numero=21, Nome="GP da Espanha", Circuito="Madri", Cidade="Madri", Pais="🇪🇸",
+                Id=21, Numero=21, Nome="GP da Espanha", Circuito="Madri", Cidade="Madri", Pais="es",
                 Sprint=false, PrazoQualify=new DateTime(2026,9,12,8,0,0,DateTimeKind.Utc),
                 DataCorrida=new DateTime(2026,9,12,8,0,0,DateTimeKind.Utc),
                 CircuitoTipo="Circuito semi-permanente", CircuitoComprimento="5.474 km", Voltas=56, Distancia="306.5 km",
@@ -393,7 +393,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             // Id=22: GP do Azerbaijão — Regular GP
             // TL1 = 2026-09-23 06:30, TL2 = 2026-09-23 10:00, TL3 = 2026-09-24 06:30, Classificacao = 2026-09-24 10:00
             new Etapa {
-                Id=22, Numero=22, Nome="GP do Azerbaijão", Circuito="Baku", Cidade="Baku", Pais="🇦🇿",
+                Id=22, Numero=22, Nome="GP do Azerbaijão", Circuito="Baku", Cidade="Baku", Pais="az",
                 Sprint=false, PrazoQualify=new DateTime(2026,9,25,6,0,0,DateTimeKind.Utc),
                 DataCorrida=new DateTime(2026,9,25,6,0,0,DateTimeKind.Utc),
                 CircuitoTipo="Circuito de rua", CircuitoComprimento="6.003 km", Voltas=51, Distancia="306.0 km",
@@ -407,7 +407,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             // Id=23: Sprint de Singapura — Sprint
             // TL1 = 2026-10-08 07:00, TL2 = null, TL3 = null, Classificacao = 2026-10-08 10:30
             new Etapa {
-                Id=23, Numero=23, Nome="Sprint de Singapura", Circuito="Marina Bay", Cidade="Singapura", Pais="🇸🇬",
+                Id=23, Numero=23, Nome="Sprint de Singapura", Circuito="Marina Bay", Cidade="Singapura", Pais="sg",
                 Sprint=true, PrazoQualify=new DateTime(2026,10,9,6,30,0,DateTimeKind.Utc),
                 DataCorrida=new DateTime(2026,10,9,6,30,0,DateTimeKind.Utc),
                 CircuitoTipo="Circuito de rua (noturno)", CircuitoComprimento="4.940 km", Voltas=21, Distancia="103.7 km",
@@ -421,7 +421,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             // Id=24: GP de Singapura — Sprint weekend GP (after Sprint Id=23)
             // TL1 = null, TL2 = null, TL3 = null, Classificacao = 2026-10-09 11:30
             new Etapa {
-                Id=24, Numero=24, Nome="GP de Singapura", Circuito="Marina Bay", Cidade="Singapura", Pais="🇸🇬",
+                Id=24, Numero=24, Nome="GP de Singapura", Circuito="Marina Bay", Cidade="Singapura", Pais="sg",
                 Sprint=false, PrazoQualify=new DateTime(2026,10,10,7,0,0,DateTimeKind.Utc),
                 DataCorrida=new DateTime(2026,10,10,7,0,0,DateTimeKind.Utc),
                 CircuitoTipo="Circuito de rua (noturno)", CircuitoComprimento="4.940 km", Voltas=62, Distancia="306.1 km",
@@ -435,7 +435,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             // Id=25: GP dos EUA — Regular GP
             // TL1 = 2026-10-22 15:30, TL2 = 2026-10-22 19:00, TL3 = 2026-10-23 15:30, Classificacao = 2026-10-23 19:00
             new Etapa {
-                Id=25, Numero=25, Nome="GP dos EUA", Circuito="Austin", Cidade="Austin", Pais="🇺🇸",
+                Id=25, Numero=25, Nome="GP dos EUA", Circuito="Austin", Cidade="Austin", Pais="us",
                 Sprint=false, PrazoQualify=new DateTime(2026,10,24,15,0,0,DateTimeKind.Utc),
                 DataCorrida=new DateTime(2026,10,24,15,0,0,DateTimeKind.Utc),
                 CircuitoTipo="Circuito permanente", CircuitoComprimento="5.513 km", Voltas=56, Distancia="308.4 km",
@@ -449,7 +449,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             // Id=26: GP do México — Regular GP
             // TL1 = 2026-10-29 15:30, TL2 = 2026-10-29 19:00, TL3 = 2026-10-30 15:30, Classificacao = 2026-10-30 19:00
             new Etapa {
-                Id=26, Numero=26, Nome="GP do México", Circuito="Cidade do México", Cidade="Cidade do México", Pais="🇲🇽",
+                Id=26, Numero=26, Nome="GP do México", Circuito="Cidade do México", Cidade="Cidade do México", Pais="mx",
                 Sprint=false, PrazoQualify=new DateTime(2026,10,31,15,0,0,DateTimeKind.Utc),
                 DataCorrida=new DateTime(2026,10,31,15,0,0,DateTimeKind.Utc),
                 CircuitoTipo="Circuito permanente (alta altitude)", CircuitoComprimento="4.304 km", Voltas=71, Distancia="305.4 km",
@@ -463,7 +463,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             // Id=27: GP do Brasil — Regular GP
             // TL1 = 2026-11-05 12:30, TL2 = 2026-11-05 16:00, TL3 = 2026-11-06 12:30, Classificacao = 2026-11-06 16:00
             new Etapa {
-                Id=27, Numero=27, Nome="GP do Brasil", Circuito="Interlagos", Cidade="São Paulo", Pais="🇧🇷",
+                Id=27, Numero=27, Nome="GP do Brasil", Circuito="Interlagos", Cidade="São Paulo", Pais="br",
                 Sprint=false, PrazoQualify=new DateTime(2026,11,7,12,0,0,DateTimeKind.Utc),
                 DataCorrida=new DateTime(2026,11,7,12,0,0,DateTimeKind.Utc),
                 CircuitoTipo="Circuito permanente", CircuitoComprimento="4.309 km", Voltas=71, Distancia="305.9 km",
@@ -477,7 +477,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             // Id=28: GP de Las Vegas — Regular GP
             // TL1 = 2026-11-18 22:30, TL2 = 2026-11-19 02:00, TL3 = 2026-11-19 22:30, Classificacao = 2026-11-20 02:00
             new Etapa {
-                Id=28, Numero=28, Nome="GP de Las Vegas", Circuito="Las Vegas", Cidade="Las Vegas", Pais="🇺🇸",
+                Id=28, Numero=28, Nome="GP de Las Vegas", Circuito="Las Vegas", Cidade="Las Vegas", Pais="us",
                 Sprint=false, PrazoQualify=new DateTime(2026,11,20,22,0,0,DateTimeKind.Utc),
                 DataCorrida=new DateTime(2026,11,20,22,0,0,DateTimeKind.Utc),
                 CircuitoTipo="Circuito de rua (noturno)", CircuitoComprimento="6.201 km", Voltas=50, Distancia="310.0 km",
@@ -491,7 +491,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             // Id=29: GP do Catar — Regular GP
             // TL1 = 2026-11-26 12:30, TL2 = 2026-11-26 16:00, TL3 = 2026-11-27 12:30, Classificacao = 2026-11-27 16:00
             new Etapa {
-                Id=29, Numero=29, Nome="GP do Catar", Circuito="Lusail", Cidade="Lusail", Pais="🇶🇦",
+                Id=29, Numero=29, Nome="GP do Catar", Circuito="Lusail", Cidade="Lusail", Pais="qa",
                 Sprint=false, PrazoQualify=new DateTime(2026,11,28,12,0,0,DateTimeKind.Utc),
                 DataCorrida=new DateTime(2026,11,28,12,0,0,DateTimeKind.Utc),
                 CircuitoTipo="Circuito permanente (noturno)", CircuitoComprimento="5.380 km", Voltas=57, Distancia="306.6 km",
@@ -505,7 +505,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             // Id=30: GP de Abu Dhabi — Regular GP
             // TL1 = 2026-12-03 08:30, TL2 = 2026-12-03 12:00, TL3 = 2026-12-04 08:30, Classificacao = 2026-12-04 12:00
             new Etapa {
-                Id=30, Numero=30, Nome="GP de Abu Dhabi", Circuito="Yas Marina", Cidade="Abu Dhabi", Pais="🇦🇪",
+                Id=30, Numero=30, Nome="GP de Abu Dhabi", Circuito="Yas Marina", Cidade="Abu Dhabi", Pais="ae",
                 Sprint=false, PrazoQualify=new DateTime(2026,12,5,8,0,0,DateTimeKind.Utc),
                 DataCorrida=new DateTime(2026,12,5,8,0,0,DateTimeKind.Utc),
                 CircuitoTipo="Circuito permanente", CircuitoComprimento="5.281 km", Voltas=58, Distancia="306.2 km",
