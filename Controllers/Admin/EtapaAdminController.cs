@@ -2,7 +2,7 @@
 // CONTROLLER: EtapaAdminController (Admin)
 // ============================================================
 // Permite ao administrador visualizar e alterar o prazo de
-// apostas (PrazoQualify) de qualquer etapa do calendário.
+// palpites (PrazoQualify) de qualquer etapa do calendário.
 //
 // Cenário de uso: o prazo de uma etapa já passou, mas o admin
 // quer reabrir temporariamente para permitir novos palpites
@@ -68,7 +68,7 @@ public class EtapaAdminController(AppDbContext db) : ApiControllerBase
         if (etapa is null) return Erro404("Etapa não encontrada.");
 
         // Salva o novo prazo no banco. A partir deste momento, o PalpiteController
-        // usará este novo valor para liberar ou bloquear apostas.
+        // usará este novo valor para liberar ou bloquear palpites.
         etapa.PrazoQualify = req.NovoPrazo;
         await db.SaveChangesAsync();
 
