@@ -17,7 +17,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using F1Fast.API.Data;
+using F1Fast.API.Services;
 using static F1Fast.API.Helpers.DateTimeHelper;
 
 namespace F1Fast.API.Controllers.Admin;
@@ -27,7 +29,7 @@ namespace F1Fast.API.Controllers.Admin;
 public record AtualizarPrazoRequest(DateTime NovoPrazo);
 
 [ApiController, Route("api/admin/etapas"), Authorize(Roles = "Admin")]
-public class EtapaAdminController(AppDbContext db) : ApiControllerBase
+public class EtapaAdminController(AppDbContext db, AuditoriaService audit) : ApiControllerBase
 {
     // GET /api/admin/etapas → retorna todas as 30 etapas com seus prazos atuais
     // Usado pela tela "Gerenciar Prazos" do painel admin para listar as etapas.
@@ -72,6 +74,8 @@ public class EtapaAdminController(AppDbContext db) : ApiControllerBase
         etapa.PrazoQualify = req.NovoPrazo;
         await db.SaveChangesAsync();
 
+        await audit.RegistrarAsync("PRAZO_ALTERADO", int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out var uid) ? uid : null, User.FindFirstValue(ClaimTypes.Name), "Etapa", id, detalhes: $"Novo prazo: {req.NovoPrazo:dd/MM/yyyy HH:mm}", ip: AuditoriaService.ExtrairIp(HttpContext));
+
         return Ok($"Prazo da etapa '{etapa.Nome}' atualizado para {req.NovoPrazo:dd/MM/yyyy HH:mm} UTC.");
     }
 
@@ -86,6 +90,9 @@ public class EtapaAdminController(AppDbContext db) : ApiControllerBase
         await db.SaveChangesAsync();
 
         var status = etapa.Cancelada ? "cancelada" : "reativada";
+
+        await audit.RegistrarAsync("ETAPA_CANCELADA", int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out var uid2) ? uid2 : null, User.FindFirstValue(ClaimTypes.Name), "Etapa", id, detalhes: $"Cancelada: {status}", ip: AuditoriaService.ExtrairIp(HttpContext));
+
         return Ok(new { mensagem = $"Etapa '{etapa.Nome}' {status}.", cancelada = etapa.Cancelada });
     }
 }

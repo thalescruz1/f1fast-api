@@ -18,12 +18,13 @@ using System.Security.Claims;
 using F1Fast.API.Data;
 using F1Fast.API.DTOs;
 using F1Fast.API.Models;
+using F1Fast.API.Services;
 using static F1Fast.API.Helpers.DateTimeHelper;
 
 namespace F1Fast.API.Controllers;
 
 [ApiController, Route("api/palpites"), Authorize]
-public class PalpiteController(AppDbContext db) : ApiControllerBase
+public class PalpiteController(AppDbContext db, AuditoriaService audit) : ApiControllerBase
 {
     private int UserId => int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
@@ -99,6 +100,9 @@ public class PalpiteController(AppDbContext db) : ApiControllerBase
 
         // Persiste as mudanças no banco de dados
         await db.SaveChangesAsync();
+
+        await audit.RegistrarAsync("PALPITE_ENVIADO", UserId, User.FindFirstValue(ClaimTypes.Name), "Palpite", req.EtapaId, detalhes: existente is not null ? "Palpite atualizado" : "Novo palpite", ip: AuditoriaService.ExtrairIp(HttpContext));
+
         return Ok("Palpite enviado com sucesso.");
     }
 

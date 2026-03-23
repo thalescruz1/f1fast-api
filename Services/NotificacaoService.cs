@@ -17,7 +17,7 @@ using static F1Fast.API.Helpers.DateTimeHelper;
 
 namespace F1Fast.API.Services;
 
-public class NotificacaoService(AppDbContext db, IConfiguration config, ILogger<NotificacaoService> logger)
+public class NotificacaoService(AppDbContext db, IConfiguration config, ILogger<NotificacaoService> logger, AuditoriaService audit)
 {
     /// <summary>
     /// Verifica se hoje é a quarta-feira anterior a alguma corrida (a partir das 09:00 UTC)
@@ -90,6 +90,8 @@ public class NotificacaoService(AppDbContext db, IConfiguration config, ILogger<
         // Marca a etapa como "lembrete já enviado" para não reenviar
         proximaEtapa.LembreteEnviado = true;
         await db.SaveChangesAsync();
+
+        await audit.RegistrarAsync("LEMBRETE_ENVIADO", entidade: "Etapa", entidadeId: proximaEtapa.Id, detalhes: $"{semPalpite.Count} e-mails enviados para {proximaEtapa.Nome}");
     }
 
     /// <summary>
@@ -145,6 +147,8 @@ public class NotificacaoService(AppDbContext db, IConfiguration config, ILogger<
         // Marca como enviado para não reenviar
         proximaEtapa.LembreteUrgenteEnviado = true;
         await db.SaveChangesAsync();
+
+        await audit.RegistrarAsync("LEMBRETE_URGENTE", entidade: "Etapa", entidadeId: proximaEtapa.Id, detalhes: $"{semPalpite.Count} e-mails urgentes para {proximaEtapa.Nome}");
     }
 
     /// <summary>

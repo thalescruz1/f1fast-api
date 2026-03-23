@@ -33,6 +33,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<Palpite>   Palpites   => Set<Palpite>();
     public DbSet<Resultado> Resultados => Set<Resultado>();
     public DbSet<Pontuacao> Pontuacoes => Set<Pontuacao>();
+    public DbSet<LogAuditoria> LogsAuditoria => Set<LogAuditoria>();
 
     /// <summary>
     /// Configuração avançada do modelo do banco de dados.

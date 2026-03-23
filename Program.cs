@@ -50,6 +50,7 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<PontuacaoService>();
 builder.Services.AddScoped<NotificacaoService>();
+builder.Services.AddScoped<AuditoriaService>();
 builder.Services.AddHostedService<LembreteBackgroundService>();
 
 // ============================================================

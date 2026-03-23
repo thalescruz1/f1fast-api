@@ -15,6 +15,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using F1Fast.API.Data;
 using F1Fast.API.DTOs;
 using F1Fast.API.Models;
@@ -24,7 +25,7 @@ using F1Fast.API.Services;
 namespace F1Fast.API.Controllers.Admin;
 
 [ApiController, Route("api/admin/resultado"), Authorize(Roles = "Admin")]
-public class ResultadoController(AppDbContext db, PontuacaoService pontuacao) : ApiControllerBase
+public class ResultadoController(AppDbContext db, PontuacaoService pontuacao, AuditoriaService audit) : ApiControllerBase
 {
     // POST /api/admin/resultado → lança o resultado oficial de uma corrida
     // Após salvar o resultado, calcula automaticamente os pontos de todos os participantes.
@@ -85,6 +86,9 @@ public class ResultadoController(AppDbContext db, PontuacaoService pontuacao) : 
 
         // Chama o serviço de pontuação para calcular e salvar os pontos de todos
         await pontuacao.CalcularPontosEtapaAsync(req.EtapaId);
+
+        await audit.RegistrarAsync("RESULTADO_LANCADO", int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out var uid) ? uid : null, User.FindFirstValue(ClaimTypes.Name), "Resultado", req.EtapaId, detalhes: "Resultado lançado e pontos calculados", ip: AuditoriaService.ExtrairIp(HttpContext));
+
         return Ok("Resultado inserido e pontos calculados.");
     }
 
@@ -118,6 +122,9 @@ public class ResultadoController(AppDbContext db, PontuacaoService pontuacao) : 
 
         user.Role = novaRole;
         await db.SaveChangesAsync();
+
+        await audit.RegistrarAsync("ROLE_ALTERADA", int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out var adminId) ? adminId : null, User.FindFirstValue(ClaimTypes.Name), "Usuario", id, detalhes: $"Nova role: {novaRole}", ip: AuditoriaService.ExtrairIp(HttpContext));
+
         return Ok();
     }
 }
