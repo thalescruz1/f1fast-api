@@ -212,7 +212,7 @@ public class AuthService(AppDbContext db, IConfiguration config, ILogger<AuthSer
             config["Smtp:Host"], int.Parse(config["Smtp:Port"]!));
 
         client.Credentials = new System.Net.NetworkCredential(config["Smtp:User"], config["Smtp:Pass"]);
-        client.EnableSsl   = false; // conexão segura (TLS)
+        client.EnableSsl   = true; // conexão segura (TLS)
 
         // Aceita o certificado do servidor SMTP mesmo se o hostname não bater
         // exatamente (ex: provedor de hospedagem com certificado wildcard).
