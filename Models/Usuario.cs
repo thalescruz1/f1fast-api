@@ -8,6 +8,7 @@
 // ============================================================
 
 using System.ComponentModel.DataAnnotations;
+using static F1Fast.API.Helpers.DateTimeHelper;
 
 namespace F1Fast.API.Models;
 
@@ -63,7 +64,7 @@ public class Usuario
     public DateTime? ResetTokenExpiry { get; set; }
 
     // Data de criação do cadastro. DateTime.UtcNow = hora atual universal (UTC).
-    public DateTime CriadoEm { get; set; } = DateTime.UtcNow;
+    public DateTime CriadoEm { get; set; } = AgoraBRT;
 
     // "Propriedade de Navegação": lista de todos os palpites deste usuário.
     // O Entity Framework faz um JOIN automático quando solicitado.

@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using F1Fast.API.Data;
+using static F1Fast.API.Helpers.DateTimeHelper;
 
 namespace F1Fast.API.Controllers.Admin;
 
@@ -33,7 +34,7 @@ public class EtapaAdminController(AppDbContext db) : ApiControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        var agora = DateTime.UtcNow;
+        var agora = AgoraBRT;
 
         var etapas = await db.Etapas
             .OrderBy(e => e.Numero)

@@ -11,6 +11,8 @@
 //   - 1 piloto para Melhor Volta
 // ============================================================
 
+using static F1Fast.API.Helpers.DateTimeHelper;
+
 namespace F1Fast.API.Models;
 
 /// <summary>
@@ -54,7 +56,7 @@ public class Palpite
     public int MelhorVoltaId { get; set; }
 
     // Data/hora do envio (ou última atualização) do palpite
-    public DateTime EnviadoEm { get; set; } = DateTime.UtcNow;
+    public DateTime EnviadoEm { get; set; } = AgoraBRT;
 
     // Pontos ganhos nesta etapa. "?" = null enquanto não encerrada.
     // Preenchido pelo PontuacaoService após o admin lançar o resultado real.

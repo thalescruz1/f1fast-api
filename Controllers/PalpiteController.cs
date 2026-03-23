@@ -18,15 +18,13 @@ using System.Security.Claims;
 using F1Fast.API.Data;
 using F1Fast.API.DTOs;
 using F1Fast.API.Models;
+using static F1Fast.API.Helpers.DateTimeHelper;
 
 namespace F1Fast.API.Controllers;
 
 [ApiController, Route("api/palpites"), Authorize]
 public class PalpiteController(AppDbContext db) : ApiControllerBase
 {
-    // Propriedade que lê o ID do usuário logado a partir do JWT.
-    // ClaimTypes.NameIdentifier = campo do token que guarda o ID do usuário.
-    // "=>" sem bloco { } = propriedade calculada (recalculada a cada acesso).
     private int UserId => int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
     // POST /api/palpites → envia um palpite (ou atualiza se já enviou antes)
@@ -42,7 +40,7 @@ public class PalpiteController(AppDbContext db) : ApiControllerBase
             return Erro400("Esta etapa foi cancelada.");
 
         // Verifica se o prazo não expirou
-        if (DateTime.UtcNow > etapa.PrazoQualify)
+        if (AgoraBRT > etapa.PrazoQualify)
             return Erro400("Prazo encerrado para esta etapa.");
 
         // Agrupa os IDs das 10 posições para verificar duplicatas
@@ -74,7 +72,7 @@ public class PalpiteController(AppDbContext db) : ApiControllerBase
             existente.Pos9Id        = req.Pos9Id;
             existente.Pos10Id       = req.Pos10Id;
             existente.MelhorVoltaId = req.MelhorVoltaId;
-            existente.EnviadoEm     = DateTime.UtcNow;
+            existente.EnviadoEm     = AgoraBRT;
             existente.PontosObtidos = null; // reseta pontos ao alterar palpite
         }
         else
@@ -123,7 +121,7 @@ public class PalpiteController(AppDbContext db) : ApiControllerBase
         var etapa = await db.Etapas.FindAsync(etapaId);
         if (etapa is null) return Erro404("Etapa não encontrada.");
 
-        if (DateTime.UtcNow < etapa.PrazoQualify)
+        if (AgoraBRT < etapa.PrazoQualify)
             return Erro400("Resultado não disponível antes do prazo.");
 
         var resultado = await db.Resultados.FirstOrDefaultAsync(r => r.EtapaId == etapaId);
@@ -164,7 +162,7 @@ public class PalpiteController(AppDbContext db) : ApiControllerBase
         if (etapa is null) return Erro404("Etapa não encontrada.");
 
         // Bloqueia acesso antes do prazo (os palpites ficam ocultos até o qualifying)
-        if (DateTime.UtcNow < etapa.PrazoQualify)
+        if (AgoraBRT < etapa.PrazoQualify)
             return Erro400("Os palpites ficam visíveis após o prazo.");
 
         // Cria um dicionário id→nome para resolver os IDs em nomes de pilotos

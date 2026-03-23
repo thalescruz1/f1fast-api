@@ -12,6 +12,8 @@
 //   5. Pontos são calculados e a etapa é marcada como Encerrada
 // ============================================================
 
+using static F1Fast.API.Helpers.DateTimeHelper;
+
 namespace F1Fast.API.Models;
 
 /// <summary>
@@ -53,5 +55,5 @@ public class Resultado
     public int MelhorVoltaId { get; set; }
 
     // Data/hora em que o admin inseriu este resultado no sistema
-    public DateTime InseridoEm { get; set; } = DateTime.UtcNow;
+    public DateTime InseridoEm { get; set; } = AgoraBRT;
 }

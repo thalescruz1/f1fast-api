@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using F1Fast.API.Data;
 using F1Fast.API.DTOs;
+using static F1Fast.API.Helpers.DateTimeHelper;
 
 namespace F1Fast.API.Controllers;
 
@@ -24,7 +25,7 @@ public class EtapaController(AppDbContext db) : ApiControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        var agora  = DateTime.UtcNow; // hora atual para calcular PrazoExpirado
+        var agora  = AgoraBRT; // hora atual para calcular PrazoExpirado
 
         // db.Etapas = acessa a tabela Etapas do banco
         // .OrderBy()  = ordena pelo campo Numero (1, 2, 3...)
@@ -50,7 +51,7 @@ public class EtapaController(AppDbContext db) : ApiControllerBase
     [HttpGet("proxima")]
     public async Task<IActionResult> GetProxima()
     {
-        var agora   = DateTime.UtcNow;
+        var agora   = AgoraBRT;
 
         // Filtramos etapas que:
         //   - Não foram encerradas (!e.Encerrada)

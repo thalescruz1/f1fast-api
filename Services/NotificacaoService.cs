@@ -13,6 +13,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using F1Fast.API.Data;
+using static F1Fast.API.Helpers.DateTimeHelper;
 
 namespace F1Fast.API.Services;
 
@@ -25,7 +26,7 @@ public class NotificacaoService(AppDbContext db, IConfiguration config, ILogger<
     /// </summary>
     public async Task EnviarLembretesAsync()
     {
-        var agora = DateTime.UtcNow;
+        var agora = AgoraBRT;
 
         // Só dispara a partir das 09:00 UTC e apenas às quartas-feiras
         if (agora.DayOfWeek != DayOfWeek.Wednesday || agora.Hour < 9)
@@ -98,7 +99,7 @@ public class NotificacaoService(AppDbContext db, IConfiguration config, ILogger<
     /// </summary>
     public async Task EnviarLembretesUrgentesAsync()
     {
-        var agora  = DateTime.UtcNow;
+        var agora  = AgoraBRT;
         var limite = agora.AddMinutes(45); // janela de 45 min para cobrir o intervalo de 30 min do background service
 
         // Busca etapa cujo PrazoQualify está nos próximos 45 minutos e ainda não teve lembrete urgente
@@ -218,7 +219,7 @@ public class NotificacaoService(AppDbContext db, IConfiguration config, ILogger<
   <!-- Footer -->
   <tr><td style=""background-color:#F3F3F3;padding:20px 32px;text-align:center;"">
     <p style=""margin:0;font-size:12px;color:#9E9E9E;"">
-      © {DateTime.UtcNow.Year} F1Fast — Todos os direitos reservados
+      © {AgoraBRT.Year} F1Fast — Todos os direitos reservados
     </p>
   </td></tr>
 
@@ -282,7 +283,7 @@ public class NotificacaoService(AppDbContext db, IConfiguration config, ILogger<
   <!-- Footer -->
   <tr><td style=""background-color:#F3F3F3;padding:20px 32px;text-align:center;"">
     <p style=""margin:0;font-size:12px;color:#9E9E9E;"">
-      © {DateTime.UtcNow.Year} F1Fast — Todos os direitos reservados
+      © {AgoraBRT.Year} F1Fast — Todos os direitos reservados
     </p>
   </td></tr>
 

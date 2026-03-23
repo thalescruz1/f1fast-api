@@ -18,6 +18,7 @@ using Microsoft.EntityFrameworkCore;
 using F1Fast.API.Data;
 using F1Fast.API.DTOs;
 using F1Fast.API.Models;
+using static F1Fast.API.Helpers.DateTimeHelper;
 using F1Fast.API.Services;
 
 namespace F1Fast.API.Controllers.Admin;
@@ -78,7 +79,7 @@ public class ResultadoController(AppDbContext db, PontuacaoService pontuacao) : 
             resultado.Pos10Id       = req.Pos10Id;
             resultado.Pos11Id       = req.Pos11Id;
             resultado.MelhorVoltaId = req.MelhorVoltaId;
-            resultado.InseridoEm    = DateTime.UtcNow;
+            resultado.InseridoEm    = AgoraBRT;
             await db.SaveChangesAsync();
         }
 

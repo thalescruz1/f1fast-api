@@ -21,6 +21,7 @@ using Microsoft.IdentityModel.Tokens;
 using F1Fast.API.Data;
 using F1Fast.API.DTOs;
 using F1Fast.API.Models;
+using static F1Fast.API.Helpers.DateTimeHelper;
 
 namespace F1Fast.API.Services;
 
@@ -101,7 +102,7 @@ public class AuthService(AppDbContext db, IConfiguration config, ILogger<AuthSer
         // ".ToString("N")" = formato sem traços (32 caracteres hex)
         var token = Guid.NewGuid().ToString("N");
         user.ResetToken        = token;
-        user.ResetTokenExpiry  = DateTime.UtcNow.AddHours(1); // válido por 1 hora
+        user.ResetTokenExpiry  = AgoraBRT.AddHours(1); // válido por 1 hora
         await db.SaveChangesAsync();
 
         // Monta o link de redefinição que será enviado por e-mail
@@ -137,7 +138,7 @@ public class AuthService(AppDbContext db, IConfiguration config, ILogger<AuthSer
             return (false, erroSenha);
 
         var user = await db.Usuarios.FirstOrDefaultAsync(u =>
-            u.ResetToken == token && u.ResetTokenExpiry > DateTime.UtcNow);
+            u.ResetToken == token && u.ResetTokenExpiry > AgoraBRT);
 
         if (user is null)
             return (false, "Token inválido ou expirado.");
@@ -193,7 +194,7 @@ public class AuthService(AppDbContext db, IConfiguration config, ILogger<AuthSer
             issuer:             config["Jwt:Issuer"],   // quem emitiu o token
             audience:           config["Jwt:Audience"], // para quem é o token
             claims:             claims,
-            expires:            DateTime.UtcNow.AddDays(30),
+            expires:            AgoraBRT.AddDays(30),
             signingCredentials: creds
         );
 
@@ -272,7 +273,7 @@ public class AuthService(AppDbContext db, IConfiguration config, ILogger<AuthSer
   <!-- Footer -->
   <tr><td style=""background-color:#F3F3F3;padding:20px 32px;text-align:center;"">
     <p style=""margin:0;font-size:12px;color:#9E9E9E;"">
-      © {DateTime.UtcNow.Year} F1Fast — Todos os direitos reservados
+      © {AgoraBRT.Year} F1Fast — Todos os direitos reservados
     </p>
   </td></tr>
 
