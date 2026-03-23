@@ -6,7 +6,7 @@
 //
 // Este service é chamado pelo LembreteBackgroundService a cada
 // 30 minutos. Dois tipos de lembrete são enviados:
-//   1) Quarta-feira anterior à corrida, às 09:00 UTC (lembrete geral)
+//   1) Quarta-feira anterior à corrida, às 09:00 BRT (lembrete geral)
 //   2) 30 minutos antes do PrazoQualify (lembrete urgente/última chance)
 // Flags LembreteEnviado e LembreteUrgenteEnviado evitam duplicatas.
 // ============================================================
@@ -28,7 +28,7 @@ public class NotificacaoService(AppDbContext db, IConfiguration config, ILogger<
     {
         var agora = AgoraBRT;
 
-        // Só dispara a partir das 09:00 UTC e apenas às quartas-feiras
+        // Só dispara a partir das 09:00 BRT e apenas às quartas-feiras
         if (agora.DayOfWeek != DayOfWeek.Wednesday || agora.Hour < 9)
             return;
 
@@ -200,7 +200,7 @@ public class NotificacaoService(AppDbContext db, IConfiguration config, ILogger<
     <tr><td style=""background-color:#F3F3F3;border-left:4px solid #E10600;border-radius:4px;padding:16px 20px;"">
       <p style=""margin:0 0 4px;font-size:12px;color:#9E9E9E;text-transform:uppercase;letter-spacing:1px;"">Etapa</p>
       <p style=""margin:0 0 12px;font-size:18px;color:#1A1A1A;font-weight:700;font-family:'Arial Black',Impact,sans-serif;"">{nomeEtapa}</p>
-      <p style=""margin:0;font-size:13px;color:#333333;"">Prazo: <strong style=""color:#E10600;"">{prazo} UTC</strong></p>
+      <p style=""margin:0;font-size:13px;color:#333333;"">Prazo: <strong style=""color:#E10600;"">{prazo} (Horário de Brasília)</strong></p>
     </td></tr>
     </table>
 
@@ -264,7 +264,7 @@ public class NotificacaoService(AppDbContext db, IConfiguration config, ILogger<
     <tr><td style=""background-color:#FFF5F5;border-left:4px solid #E10600;border-radius:4px;padding:16px 20px;"">
       <p style=""margin:0 0 4px;font-size:12px;color:#9E9E9E;text-transform:uppercase;letter-spacing:1px;"">Etapa</p>
       <p style=""margin:0 0 12px;font-size:18px;color:#1A1A1A;font-weight:700;font-family:'Arial Black',Impact,sans-serif;"">{nomeEtapa}</p>
-      <p style=""margin:0;font-size:13px;color:#333333;"">Prazo: <strong style=""color:#E10600;"">{prazo} UTC</strong></p>
+      <p style=""margin:0;font-size:13px;color:#333333;"">Prazo: <strong style=""color:#E10600;"">{prazo} (Horário de Brasília)</strong></p>
     </td></tr>
     </table>
 
