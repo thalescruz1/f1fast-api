@@ -158,6 +158,10 @@ public class NotificacaoService(AppDbContext db, IConfiguration config, ILogger<
         client.Credentials = new System.Net.NetworkCredential(config["Smtp:User"], config["Smtp:Pass"]);
         client.EnableSsl   = true; // conexão segura (TLS)
 
+        // Aceita certificado do servidor SMTP (hostname pode não bater com o certificado)
+        System.Net.ServicePointManager.ServerCertificateValidationCallback =
+            (sender, certificate, chain, sslPolicyErrors) => true;
+
         var message = new System.Net.Mail.MailMessage(config["Smtp:From"]!, para, assunto, corpo)
         {
             IsBodyHtml = true

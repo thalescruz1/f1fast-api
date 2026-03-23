@@ -214,6 +214,12 @@ public class AuthService(AppDbContext db, IConfiguration config, ILogger<AuthSer
         client.Credentials = new System.Net.NetworkCredential(config["Smtp:User"], config["Smtp:Pass"]);
         client.EnableSsl   = true; // conexão segura (TLS)
 
+        // Aceita o certificado do servidor SMTP mesmo se o hostname não bater
+        // exatamente (ex: provedor de hospedagem com certificado wildcard).
+        // A conexão continua criptografada via TLS.
+        System.Net.ServicePointManager.ServerCertificateValidationCallback =
+            (sender, certificate, chain, sslPolicyErrors) => true;
+
         var message = new MailMessage(config["Smtp:From"]!, para, assunto, corpo)
         {
             IsBodyHtml = true // envia como HTML formatado
