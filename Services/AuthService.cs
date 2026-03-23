@@ -221,7 +221,7 @@ public class AuthService(AppDbContext db, IConfiguration config, ILogger<AuthSer
 
   <!-- Header escuro com logo -->
   <tr><td style=""background-color:#1A1A1A;padding:24px 32px;text-align:center;"">
-    <img src=""https://novo.f1fast.com.br/logo.png"" alt=""F1Fast"" width=""48"" style=""display:inline-block;vertical-align:middle;margin-right:12px;"" />
+    <img src=""https://f1fast.com.br/logo.png"" alt=""F1Fast"" width=""48"" style=""display:inline-block;vertical-align:middle;margin-right:12px;"" />
     <span style=""font-family:'Arial Black',Impact,sans-serif;font-size:24px;color:#FFFFFF;letter-spacing:3px;vertical-align:middle;"">F1FAST</span>
   </td></tr>
 
