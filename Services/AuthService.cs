@@ -27,7 +27,7 @@ namespace F1Fast.API.Services;
 
 // IConfiguration config = acesso ao appsettings.json (chaves JWT, configurações SMTP)
 // ILogger<AuthService> logger = sistema de logs do .NET para registrar erros
-public class AuthService(AppDbContext db, IConfiguration config, ILogger<AuthService> logger)
+public class AuthService(AppDbContext db, IConfiguration config, ILogger<AuthService> logger, EmailService emailService)
 {
     /// <summary>
     /// Verifica as credenciais e retorna um token JWT se válidas.
@@ -112,10 +112,10 @@ public class AuthService(AppDbContext db, IConfiguration config, ILogger<AuthSer
         // try/catch: se o e-mail falhar, não derruba a aplicação inteira
         try
         {
-            await EnviarEmailAsync(
-                para:    user.Email,
-                assunto: "F1Fast — Redefinição de senha",
-                corpo:   GerarEmailResetHtml(user.Nome, link)
+            await emailService.EnviarAsync(
+                user.Email,
+                "F1Fast — Redefinição de senha",
+                GerarEmailResetHtml(user.Nome, link)
             );
         }
         catch (Exception ex)
@@ -202,31 +202,7 @@ public class AuthService(AppDbContext db, IConfiguration config, ILogger<AuthSer
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
-    /// <summary>
-    /// Envia um e-mail HTML via SMTP usando as configurações do appsettings.json.
-    /// </summary>
-    private async Task EnviarEmailAsync(string para, string assunto, string corpo)
-    {
-        // "using" garante que o SmtpClient seja descartado (disposed) ao terminar
-        using var client = new SmtpClient(
-            config["Smtp:Host"], int.Parse(config["Smtp:Port"]!));
-
-        client.Credentials = new System.Net.NetworkCredential(config["Smtp:User"], config["Smtp:Pass"]);
-        client.EnableSsl   = true; // conexão segura (TLS)
-
-        // Aceita o certificado do servidor SMTP mesmo se o hostname não bater
-        // exatamente (ex: provedor de hospedagem com certificado wildcard).
-        // A conexão continua criptografada via TLS.
-        System.Net.ServicePointManager.ServerCertificateValidationCallback =
-            (sender, certificate, chain, sslPolicyErrors) => true;
-
-        var message = new MailMessage(config["Smtp:From"]!, para, assunto, corpo)
-        {
-            IsBodyHtml = true // envia como HTML formatado
-        };
-
-        await client.SendMailAsync(message);
-    }
+    // E-mail agora é enviado via EmailService (SendGrid)
 
     /// <summary>
     /// Gera o HTML do e-mail de redefinição de senha com layout F1Fast.

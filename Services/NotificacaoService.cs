@@ -17,7 +17,7 @@ using static F1Fast.API.Helpers.DateTimeHelper;
 
 namespace F1Fast.API.Services;
 
-public class NotificacaoService(AppDbContext db, IConfiguration config, ILogger<NotificacaoService> logger, AuditoriaService audit)
+public class NotificacaoService(AppDbContext db, ILogger<NotificacaoService> logger, AuditoriaService audit, EmailService emailService)
 {
     /// <summary>
     /// Verifica se hoje é a quarta-feira anterior a alguma corrida (a partir das 09:00 UTC)
@@ -71,10 +71,9 @@ public class NotificacaoService(AppDbContext db, IConfiguration config, ILogger<
         {
             try
             {
-                await EnviarEmailAsync(
-                    para:    usuario.Email,
-                    assunto: $"⏱ F1Fast — Prazo do palpite termina em breve! ({proximaEtapa.Nome})",
-                    corpo:   GerarEmailLembreteHtml(
+                await emailService.EnviarAsync(
+                    usuario.Email, $"⏱ F1Fast — Prazo do palpite termina em breve! ({proximaEtapa.Nome})",
+                    GerarEmailLembreteHtml(
                         usuario.Nome,
                         proximaEtapa.Nome,
                         proximaEtapa.PrazoQualify.ToString("dd/MM/yyyy HH:mm"))
@@ -129,10 +128,9 @@ public class NotificacaoService(AppDbContext db, IConfiguration config, ILogger<
         {
             try
             {
-                await EnviarEmailAsync(
-                    para:    usuario.Email,
-                    assunto: $"🚨 F1Fast — Última chance! Prazo encerra em minutos ({proximaEtapa.Nome})",
-                    corpo:   GerarEmailLembreteUrgenteHtml(
+                await emailService.EnviarAsync(
+                    usuario.Email, $"🚨 F1Fast — Última chance! Prazo encerra em minutos ({proximaEtapa.Nome})",
+                    GerarEmailLembreteUrgenteHtml(
                         usuario.Nome,
                         proximaEtapa.Nome,
                         proximaEtapa.PrazoQualify.ToString("dd/MM/yyyy HH:mm"))
@@ -152,27 +150,7 @@ public class NotificacaoService(AppDbContext db, IConfiguration config, ILogger<
     }
 
     /// <summary>
-    /// Método auxiliar privado para envio de e-mail HTML via SMTP.
-    /// </summary>
-    private async Task EnviarEmailAsync(string para, string assunto, string corpo)
-    {
-        using var client = new System.Net.Mail.SmtpClient(
-            config["Smtp:Host"], int.Parse(config["Smtp:Port"]!));
-
-        client.Credentials = new System.Net.NetworkCredential(config["Smtp:User"], config["Smtp:Pass"]);
-        client.EnableSsl   = true; // conexão segura (TLS)
-
-        // Aceita certificado do servidor SMTP (hostname pode não bater com o certificado)
-        System.Net.ServicePointManager.ServerCertificateValidationCallback =
-            (sender, certificate, chain, sslPolicyErrors) => true;
-
-        var message = new System.Net.Mail.MailMessage(config["Smtp:From"]!, para, assunto, corpo)
-        {
-            IsBodyHtml = true
-        };
-
-        await client.SendMailAsync(message);
-    }
+    // E-mail agora é enviado via EmailService (SendGrid)
 
     /// <summary>
     /// Gera o HTML do e-mail de lembrete de palpite com layout F1Fast.

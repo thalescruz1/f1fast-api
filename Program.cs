@@ -51,6 +51,7 @@ builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<PontuacaoService>();
 builder.Services.AddScoped<NotificacaoService>();
 builder.Services.AddScoped<AuditoriaService>();
+builder.Services.AddScoped<EmailService>();
 builder.Services.AddHostedService<LembreteBackgroundService>();
 
 // ============================================================
