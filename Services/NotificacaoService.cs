@@ -169,7 +169,7 @@ public class NotificacaoService(AppDbContext db, ILogger<NotificacaoService> log
 
   <!-- Header escuro com logo -->
   <tr><td style=""background-color:#1A1A1A;padding:24px 32px;text-align:center;"">
-    <img src=""https://f1fast.com.br/logo.png"" alt=""F1Fast"" width=""48"" style=""display:inline-block;vertical-align:middle;margin-right:12px;"" />
+    <img src=""https://www.f1fast.com.br/logo.png"" alt=""F1Fast"" width=""48"" style=""display:inline-block;vertical-align:middle;margin-right:12px;"" />
     <span style=""font-family:'Arial Black',Impact,sans-serif;font-size:24px;color:#FFFFFF;letter-spacing:3px;vertical-align:middle;"">F1FAST</span>
   </td></tr>
 
@@ -193,7 +193,7 @@ public class NotificacaoService(AppDbContext db, ILogger<NotificacaoService> log
     <!-- Botão CTA -->
     <table role=""presentation"" cellpadding=""0"" cellspacing=""0"" style=""margin:32px auto;"">
     <tr><td style=""background-color:#0057E1;border-radius:6px;"">
-      <a href=""https://f1fast.com.br"" target=""_blank"" style=""display:inline-block;padding:14px 32px;color:#FFFFFF;text-decoration:none;font-family:'Arial Black',Impact,sans-serif;font-size:14px;letter-spacing:2px;text-transform:uppercase;"">
+      <a href=""https://www.f1fast.com.br"" target=""_blank"" style=""display:inline-block;padding:14px 32px;color:#FFFFFF;text-decoration:none;font-family:'Arial Black',Impact,sans-serif;font-size:14px;letter-spacing:2px;text-transform:uppercase;"">
         FAZER MEU PALPITE
       </a>
     </td></tr>
@@ -233,7 +233,7 @@ public class NotificacaoService(AppDbContext db, ILogger<NotificacaoService> log
 
   <!-- Header escuro com logo -->
   <tr><td style=""background-color:#1A1A1A;padding:24px 32px;text-align:center;"">
-    <img src=""https://f1fast.com.br/logo.png"" alt=""F1Fast"" width=""48"" style=""display:inline-block;vertical-align:middle;margin-right:12px;"" />
+    <img src=""https://www.f1fast.com.br/logo.png"" alt=""F1Fast"" width=""48"" style=""display:inline-block;vertical-align:middle;margin-right:12px;"" />
     <span style=""font-family:'Arial Black',Impact,sans-serif;font-size:24px;color:#FFFFFF;letter-spacing:3px;vertical-align:middle;"">F1FAST</span>
   </td></tr>
 
@@ -257,7 +257,7 @@ public class NotificacaoService(AppDbContext db, ILogger<NotificacaoService> log
     <!-- Botão CTA VERMELHO (urgência) -->
     <table role=""presentation"" cellpadding=""0"" cellspacing=""0"" style=""margin:32px auto;"">
     <tr><td style=""background-color:#E10600;border-radius:6px;"">
-      <a href=""https://f1fast.com.br"" target=""_blank"" style=""display:inline-block;padding:14px 32px;color:#FFFFFF;text-decoration:none;font-family:'Arial Black',Impact,sans-serif;font-size:14px;letter-spacing:2px;text-transform:uppercase;"">
+      <a href=""https://www.f1fast.com.br"" target=""_blank"" style=""display:inline-block;padding:14px 32px;color:#FFFFFF;text-decoration:none;font-family:'Arial Black',Impact,sans-serif;font-size:14px;letter-spacing:2px;text-transform:uppercase;"">
         FAZER MEU PALPITE AGORA
       </a>
     </td></tr>
