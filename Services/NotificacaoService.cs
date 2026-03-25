@@ -55,19 +55,11 @@ public class NotificacaoService(AppDbContext db, ILogger<NotificacaoService> log
         if (agora.Date != quartaAnterior)
             return;
 
-        // IQueryable (não executado ainda): IDs dos usuários QUE JÁ fizeram palpite
-        var usuariosComPalpite = db.Palpites
-            .Where(p => p.EtapaId == proximaEtapa.Id)
-            .Select(p => p.UsuarioId);
+        // Busca TODOS os usuários — lembrete de quarta vai pra todo mundo
+        var todosUsuarios = await db.Usuarios.ToListAsync();
 
-        // Busca usuários que NÃO estão na lista acima (os que ainda não palpitaram)
-        // ".Contains(u.Id)" vira um SQL "WHERE u.Id NOT IN (...)" eficientemente
-        var semPalpite = await db.Usuarios
-            .Where(u => !usuariosComPalpite.Contains(u.Id))
-            .ToListAsync();
-
-        // Envia e-mail individual para cada usuário sem palpite
-        foreach (var usuario in semPalpite)
+        // Envia e-mail individual para cada usuário
+        foreach (var usuario in todosUsuarios)
         {
             try
             {
@@ -90,7 +82,7 @@ public class NotificacaoService(AppDbContext db, ILogger<NotificacaoService> log
         proximaEtapa.LembreteEnviado = true;
         await db.SaveChangesAsync();
 
-        await audit.RegistrarAsync("LEMBRETE_ENVIADO", entidade: "Etapa", entidadeId: proximaEtapa.Id, detalhes: $"{semPalpite.Count} e-mails enviados para {proximaEtapa.Nome}");
+        await audit.RegistrarAsync("LEMBRETE_ENVIADO", entidade: "Etapa", entidadeId: proximaEtapa.Id, detalhes: $"{todosUsuarios.Count} e-mails enviados para {proximaEtapa.Nome}");
     }
 
     /// <summary>
