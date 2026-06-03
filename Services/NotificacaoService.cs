@@ -13,6 +13,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using F1Fast.API.Data;
+using F1Fast.API.Models;
 using static F1Fast.API.Helpers.DateTimeHelper;
 
 namespace F1Fast.API.Services;
@@ -142,7 +143,43 @@ public class NotificacaoService(AppDbContext db, ILogger<NotificacaoService> log
     }
 
     /// <summary>
-    // E-mail agora é enviado via EmailService (SendGrid)
+    /// Reenvio MANUAL (acionado pelo admin) do lembrete geral de uma etapa específica.
+    /// Diferente de EnviarLembretesAsync, ignora as travas de data (quarta-feira/09:00)
+    /// e a flag LembreteEnviado — envia para TODOS os usuários na hora.
+    /// Retorna a quantidade de e-mails enviados com sucesso.
+    /// </summary>
+    public async Task<int> ReenviarLembreteEtapaAsync(Etapa etapa)
+    {
+        var usuarios = await db.Usuarios.ToListAsync();
+        var enviados = 0;
+
+        foreach (var usuario in usuarios)
+        {
+            try
+            {
+                await emailService.EnviarAsync(
+                    usuario.Email, $"⏱ F1Fast — Prazo do palpite termina em breve! ({etapa.Nome})",
+                    GerarEmailLembreteHtml(
+                        usuario.Nome,
+                        etapa.Nome,
+                        etapa.PrazoQualify.ToString("dd/MM/yyyy HH:mm")));
+                enviados++;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Erro ao reenviar e-mail para {Email}", usuario.Email);
+            }
+        }
+
+        // Marca como enviado (deixa o fluxo automático ciente de que já houve envio)
+        etapa.LembreteEnviado = true;
+        await db.SaveChangesAsync();
+
+        return enviados;
+    }
+
+    /// <summary>
+    // E-mail agora é enviado via EmailService (Azure Communication Services)
 
     /// <summary>
     /// Gera o HTML do e-mail de lembrete de palpite com layout F1Fast.

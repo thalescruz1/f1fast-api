@@ -29,7 +29,7 @@ namespace F1Fast.API.Controllers.Admin;
 public record AtualizarPrazoRequest(DateTime NovoPrazo);
 
 [ApiController, Route("api/admin/etapas"), Authorize(Roles = "Admin")]
-public class EtapaAdminController(AppDbContext db, AuditoriaService audit) : ApiControllerBase
+public class EtapaAdminController(AppDbContext db, AuditoriaService audit, NotificacaoService notificacao) : ApiControllerBase
 {
     // GET /api/admin/etapas → retorna todas as 30 etapas com seus prazos atuais
     // Usado pela tela "Gerenciar Prazos" do painel admin para listar as etapas.
@@ -94,5 +94,21 @@ public class EtapaAdminController(AppDbContext db, AuditoriaService audit) : Api
         await audit.RegistrarAsync("ETAPA_CANCELADA", int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out var uid2) ? uid2 : null, User.FindFirstValue(ClaimTypes.Name), "Etapa", id, detalhes: $"Cancelada: {status}", ip: AuditoriaService.ExtrairIp(HttpContext));
 
         return Ok(new { mensagem = $"Etapa '{etapa.Nome}' {status}.", cancelada = etapa.Cancelada });
+    }
+
+    // POST /api/admin/etapas/{id}/reenviar-lembrete → reenvia o e-mail de lembrete
+    // da etapa para TODOS os participantes, na hora (ignora as travas de data do
+    // envio automático). Útil quando o disparo agendado falhou ou foi pulado.
+    [HttpPost("{id:int}/reenviar-lembrete")]
+    public async Task<IActionResult> ReenviarLembrete(int id)
+    {
+        var etapa = await db.Etapas.FindAsync(id);
+        if (etapa is null) return Erro404("Etapa não encontrada.");
+
+        var enviados = await notificacao.ReenviarLembreteEtapaAsync(etapa);
+
+        await audit.RegistrarAsync("LEMBRETE_REENVIADO", int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out var uid3) ? uid3 : null, User.FindFirstValue(ClaimTypes.Name), "Etapa", id, detalhes: $"{enviados} e-mails reenviados para '{etapa.Nome}'", ip: AuditoriaService.ExtrairIp(HttpContext));
+
+        return Ok(new { mensagem = $"Lembrete reenviado para {enviados} participante(s) — etapa '{etapa.Nome}'.", enviados });
     }
 }
