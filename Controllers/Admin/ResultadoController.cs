@@ -8,6 +8,8 @@
 //   2. Role = "Admin" (usuários normais recebem 403 Forbidden)
 //
 //   POST  /api/admin/resultado                     → lançar resultado de uma etapa
+//   GET   /api/admin/resultado/{etapaId}           → consultar resultado lançado (IDs)
+//   PUT   /api/admin/resultado/{etapaId}           → retificar resultado e recalcular pontos
 //   GET   /api/admin/resultado/usuarios            → listar todos os participantes
 //   PATCH /api/admin/resultado/usuarios/{id}/role  → promover/rebaixar usuário
 // ============================================================
@@ -90,6 +92,77 @@ public class ResultadoController(AppDbContext db, PontuacaoService pontuacao, Au
         await audit.RegistrarAsync("RESULTADO_LANCADO", int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out var uid) ? uid : null, User.FindFirstValue(ClaimTypes.Name), "Resultado", req.EtapaId, detalhes: "Resultado lançado e pontos calculados", ip: AuditoriaService.ExtrairIp(HttpContext));
 
         return Ok("Resultado inserido e pontos calculados.");
+    }
+
+    // GET /api/admin/resultado/{etapaId} → resultado já lançado de uma etapa, com IDs
+    // Usado pelo painel admin para pré-preencher o form no modo retificação.
+    [HttpGet("{etapaId:int}")]
+    public async Task<IActionResult> GetPorEtapa(int etapaId)
+    {
+        var resultado = await db.Resultados.FirstOrDefaultAsync(r => r.EtapaId == etapaId);
+        if (resultado is null) return Erro404("Resultado ainda não cadastrado para esta etapa.");
+
+        return Ok(new
+        {
+            resultado.EtapaId,
+            resultado.PoleId,
+            resultado.Pos1Id,  resultado.Pos2Id,  resultado.Pos3Id,  resultado.Pos4Id,
+            resultado.Pos5Id,  resultado.Pos6Id,  resultado.Pos7Id,  resultado.Pos8Id,
+            resultado.Pos9Id,  resultado.Pos10Id, resultado.Pos11Id,
+            resultado.MelhorVoltaId,
+            resultado.InseridoEm
+        });
+    }
+
+    // PUT /api/admin/resultado/{etapaId} → retifica um resultado já lançado
+    // (ex: reclassificação da FIA após a corrida) e recalcula os pontos de todos.
+    // Diferente do POST, NÃO bloqueia etapa encerrada — esse é exatamente o caso de uso.
+    // O recálculo é idempotente: sobrescreve Pontuacao e Palpite.PontosObtidos.
+    [HttpPut("{etapaId:int}")]
+    public async Task<IActionResult> Retificar(int etapaId, ResultadoRequest req)
+    {
+        if (req.EtapaId != etapaId)
+            return Erro400("EtapaId do corpo da requisição não confere com a rota.");
+
+        var etapa = await db.Etapas.FindAsync(etapaId);
+        if (etapa is null) return Erro404("Etapa não encontrada.");
+
+        // Retificação só vale para resultado já lançado; lançamento inicial é via POST
+        var resultado = await db.Resultados.FirstOrDefaultAsync(r => r.EtapaId == etapaId);
+        if (resultado is null) return Erro404("Resultado ainda não cadastrado. Use o lançamento normal.");
+
+        // Snapshot do resultado anterior para a auditoria (histórico da reclassificação)
+        var anterior = System.Text.Json.JsonSerializer.Serialize(new
+        {
+            resultado.PoleId,
+            resultado.Pos1Id,  resultado.Pos2Id,  resultado.Pos3Id,  resultado.Pos4Id,
+            resultado.Pos5Id,  resultado.Pos6Id,  resultado.Pos7Id,  resultado.Pos8Id,
+            resultado.Pos9Id,  resultado.Pos10Id, resultado.Pos11Id,
+            resultado.MelhorVoltaId
+        });
+
+        resultado.PoleId        = req.PoleId;
+        resultado.Pos1Id        = req.Pos1Id;
+        resultado.Pos2Id        = req.Pos2Id;
+        resultado.Pos3Id        = req.Pos3Id;
+        resultado.Pos4Id        = req.Pos4Id;
+        resultado.Pos5Id        = req.Pos5Id;
+        resultado.Pos6Id        = req.Pos6Id;
+        resultado.Pos7Id        = req.Pos7Id;
+        resultado.Pos8Id        = req.Pos8Id;
+        resultado.Pos9Id        = req.Pos9Id;
+        resultado.Pos10Id       = req.Pos10Id;
+        resultado.Pos11Id       = req.Pos11Id;
+        resultado.MelhorVoltaId = req.MelhorVoltaId;
+        resultado.InseridoEm    = AgoraBRT;
+        await db.SaveChangesAsync();
+
+        // Recalcula os pontos de todos os palpites da etapa (sobrescreve valores antigos)
+        await pontuacao.CalcularPontosEtapaAsync(etapaId);
+
+        await audit.RegistrarAsync("RESULTADO_RETIFICADO", int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out var uid) ? uid : null, User.FindFirstValue(ClaimTypes.Name), "Resultado", etapaId, detalhes: $"Resultado retificado e pontos recalculados. Anterior: {anterior}", ip: AuditoriaService.ExtrairIp(HttpContext));
+
+        return Ok("Resultado retificado e pontos recalculados.");
     }
 
     // GET /api/admin/resultado/usuarios → lista todos os participantes cadastrados
