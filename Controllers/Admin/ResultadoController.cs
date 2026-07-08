@@ -27,7 +27,7 @@ using F1Fast.API.Services;
 namespace F1Fast.API.Controllers.Admin;
 
 [ApiController, Route("api/admin/resultado"), Authorize(Roles = "Admin")]
-public class ResultadoController(AppDbContext db, PontuacaoService pontuacao, AuditoriaService audit) : ApiControllerBase
+public class ResultadoController(AppDbContext db, PontuacaoService pontuacao, AuditoriaService audit, PushNotificationService push) : ApiControllerBase
 {
     // POST /api/admin/resultado → lança o resultado oficial de uma corrida
     // Após salvar o resultado, calcula automaticamente os pontos de todos os participantes.
@@ -90,6 +90,9 @@ public class ResultadoController(AppDbContext db, PontuacaoService pontuacao, Au
         await pontuacao.CalcularPontosEtapaAsync(req.EtapaId);
 
         await audit.RegistrarAsync("RESULTADO_LANCADO", int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out var uid) ? uid : null, User.FindFirstValue(ClaimTypes.Name), "Resultado", req.EtapaId, detalhes: "Resultado lançado e pontos calculados", ip: AuditoriaService.ExtrairIp(HttpContext));
+
+        // Notifica todos os usuários (Web Push) que o resultado saiu
+        await push.EnviarResultadoCadastradoAsync(req.EtapaId, retificado: false);
 
         return Ok("Resultado inserido e pontos calculados.");
     }
@@ -161,6 +164,9 @@ public class ResultadoController(AppDbContext db, PontuacaoService pontuacao, Au
         await pontuacao.CalcularPontosEtapaAsync(etapaId);
 
         await audit.RegistrarAsync("RESULTADO_RETIFICADO", int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out var uid) ? uid : null, User.FindFirstValue(ClaimTypes.Name), "Resultado", etapaId, detalhes: $"Resultado retificado e pontos recalculados. Anterior: {anterior}", ip: AuditoriaService.ExtrairIp(HttpContext));
+
+        // Notifica todos os usuários (Web Push) que o resultado foi retificado
+        await push.EnviarResultadoCadastradoAsync(etapaId, retificado: true);
 
         return Ok("Resultado retificado e pontos recalculados.");
     }

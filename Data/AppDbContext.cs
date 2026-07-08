@@ -34,6 +34,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<Resultado> Resultados => Set<Resultado>();
     public DbSet<Pontuacao> Pontuacoes => Set<Pontuacao>();
     public DbSet<LogAuditoria> LogsAuditoria => Set<LogAuditoria>();
+    public DbSet<PushSubscription> PushSubscriptions => Set<PushSubscription>();
 
     /// <summary>
     /// Configuração avançada do modelo do banco de dados.
@@ -49,6 +50,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         mb.Entity<Resultado>().HasIndex(r => r.EtapaId).IsUnique();                    // 1 resultado por etapa
         mb.Entity<Pontuacao>().HasIndex(p => new { p.UsuarioId, p.EtapaId }).IsUnique(); // 1 pontuação por usuário/etapa
         mb.Entity<Palpite>().HasIndex(p => new { p.UsuarioId, p.EtapaId }).IsUnique();   // 1 palpite por usuário/etapa
+        mb.Entity<PushSubscription>().HasIndex(s => s.Endpoint).IsUnique();              // 1 inscrição por endpoint/dispositivo
 
         // SEED DATA: dados pré-carregados automaticamente na criação do banco.
         // ".HasData()" instrui o EF a inserir estes registros na migration inicial.

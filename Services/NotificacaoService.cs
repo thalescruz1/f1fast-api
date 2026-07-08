@@ -18,7 +18,7 @@ using static F1Fast.API.Helpers.DateTimeHelper;
 
 namespace F1Fast.API.Services;
 
-public class NotificacaoService(AppDbContext db, ILogger<NotificacaoService> logger, AuditoriaService audit, EmailService emailService)
+public class NotificacaoService(AppDbContext db, ILogger<NotificacaoService> logger, AuditoriaService audit, EmailService emailService, PushNotificationService push)
 {
     /// <summary>
     /// Verifica se hoje é a quarta-feira anterior a alguma corrida (a partir das 09:00 UTC)
@@ -79,6 +79,15 @@ public class NotificacaoService(AppDbContext db, ILogger<NotificacaoService> log
             }
         }
 
+        // Push para todos os usuários (mesmo público do e-mail)
+        await push.EnviarParaUsuariosAsync(
+            todosUsuarios.Select(u => u.Id),
+            new PushNotificationService.PushPayload(
+                "⏱ Prazo do palpite chegando",
+                $"Não esqueça de palpitar no {proximaEtapa.Nome}!",
+                "/palpite",
+                $"lembrete-{proximaEtapa.Id}"));
+
         // Marca a etapa como "lembrete já enviado" para não reenviar
         proximaEtapa.LembreteEnviado = true;
         await db.SaveChangesAsync();
@@ -134,6 +143,15 @@ public class NotificacaoService(AppDbContext db, ILogger<NotificacaoService> log
                 logger.LogError(ex, "Erro ao enviar lembrete urgente para {Email}", usuario.Email);
             }
         }
+
+        // Push urgente apenas para quem ainda não palpitou (mesmo público do e-mail)
+        await push.EnviarParaUsuariosAsync(
+            semPalpite.Select(u => u.Id),
+            new PushNotificationService.PushPayload(
+                "🚨 Última chance de palpitar!",
+                $"O prazo do {proximaEtapa.Nome} encerra em minutos. Corre!",
+                "/palpite",
+                $"urgente-{proximaEtapa.Id}"));
 
         // Marca como enviado para não reenviar
         proximaEtapa.LembreteUrgenteEnviado = true;
