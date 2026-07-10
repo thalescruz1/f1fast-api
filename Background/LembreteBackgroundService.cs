@@ -47,6 +47,9 @@ public class LembreteBackgroundService(
 
                 // 2) Lembrete urgente (30 min antes do PrazoQualify)
                 await svc.EnviarLembretesUrgentesAsync();
+
+                // 3) "Semana de F1!" — segunda-feira de semana com corrida (meio-dia BRT)
+                await svc.EnviarSemanaDeF1Async();
             }
             catch (Exception ex)
             {

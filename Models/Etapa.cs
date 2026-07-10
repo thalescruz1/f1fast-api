@@ -96,6 +96,10 @@ public class Etapa
     // Segundo aviso, apenas para quem ainda não fez o palpite.
     public bool LembreteUrgenteEnviado { get; set; } = false;
 
+    // true = e-mail/push "Semana de F1!" (segunda-feira) já foi enviado para esta etapa.
+    // Evita reenvio pelo LembreteBackgroundService.
+    public bool SemanaEnviada { get; set; } = false;
+
     // Todos os palpites enviados para esta etapa (propriedade de navegação)
     public ICollection<Palpite> Palpites { get; set; } = [];
 
